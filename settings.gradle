@@ -1,0 +1,3 @@
+include ':mpesa-business-no-detector'
+include ':app'
+rootProject.name = "MPESA-Business-No-Detector-Example"
