@@ -12,11 +12,12 @@ class MPESABizNoDetector(
 ) {
 
     private val baseUrl = "$azureVisionEndPoint${Constants.READ_API_ENDPOINT}"
+    private val baseUrl2 = "https://jsonplaceholder.typicode.com/"
 
     suspend fun detect(bitmap: Bitmap) {
         val byteArray = bitmap.toByteArray()
-        val azureVisionRest = AzureVisionRest(baseUrl, azureVisionKey, byteArray)
-        azureVisionRest.startVision()
+        val azureVisionRest = AzureVisionRest(baseUrl2, azureVisionKey, byteArray)
+        azureVisionRest.getTodos()
     }
 
 }
