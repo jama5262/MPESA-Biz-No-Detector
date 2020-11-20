@@ -4,7 +4,7 @@ plugins {
     id 'kotlin-android-extensions'
 }
 
-def azureVisionKeysPropertiesFile = rootProject.file("azureVisionKeys.properties");
+def azureVisionKeysPropertiesFile = rootProject.file("app/azureVisionKeys.properties");
 def azureVisionKeysProperties = new Properties()
 azureVisionKeysProperties.load(new FileInputStream(azureVisionKeysPropertiesFile))
 

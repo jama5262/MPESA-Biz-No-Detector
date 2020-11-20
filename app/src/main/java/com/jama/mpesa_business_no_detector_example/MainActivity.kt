@@ -1,9 +1,17 @@
 package com.jama.mpesa_business_no_detector_example
 
-import androidx.appcompat.app.AppCompatActivity
+import android.content.res.AssetManager
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.os.Bundle
+import android.util.Log
+import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.lifecycleScope
 import com.jama.mpesa_business_no_detector.MPESABizNoDetector
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import java.io.InputStream
 
 class MainActivity : AppCompatActivity() {
 
@@ -17,8 +25,23 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         buttonGetStarted.setOnClickListener {
-            mpesaBizNoDetector.runRestApi()
+            lifecycleScope.launch(Dispatchers.IO) {
+                val bitmap = getBitmap()
+                if (bitmap != null) {
+                    mpesaBizNoDetector.detect(bitmap)
+                } else {
+                    Log.e("jjj", "Bitmap not found")
+                }
+            }
         }
 
+    }
+
+    private fun getBitmap(): Bitmap? {
+        val assetManager: AssetManager = assets
+        val istr: InputStream = assetManager.open("image.jpg")
+        val bitmap = BitmapFactory.decodeStream(istr)
+        istr.close()
+        return bitmap
     }
 }
