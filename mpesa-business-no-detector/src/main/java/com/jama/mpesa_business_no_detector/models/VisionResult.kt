@@ -6,12 +6,10 @@ data class VisionResult(
 )
 
 data class AnalyzeResult(
-    val version: String,
     val readResults: List<ReadResult>
 )
 
 data class ReadResult(
-    val page: Int,
     val lines: List<Text>
 )
 
