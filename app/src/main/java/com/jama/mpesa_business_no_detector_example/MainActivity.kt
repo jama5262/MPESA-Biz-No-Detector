@@ -12,6 +12,7 @@ import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.io.InputStream
+import java.lang.Exception
 
 class MainActivity : AppCompatActivity() {
 
@@ -26,11 +27,11 @@ class MainActivity : AppCompatActivity() {
 
         buttonGetStarted.setOnClickListener {
             lifecycleScope.launch(Dispatchers.IO) {
-                val bitmap = getBitmap()
-                if (bitmap != null) {
+                try {
+                    val bitmap = getBitmap() ?: throw Exception("Bitmap Not found")
                     mpesaBizNoDetector.detect(bitmap)
-                } else {
-                    Log.e("jjj", "Bitmap not found")
+                } catch (e: Exception) {
+                    Log.e("jjj", "Error found -> ${e.message}")
                 }
             }
         }

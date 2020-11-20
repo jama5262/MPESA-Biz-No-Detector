@@ -24,18 +24,12 @@ class AzureVisionRest(
     private val azureVisionService = retrofit.create(AzureVisionService::class.java)
 
     suspend fun startVision() {
-        try {
-            Log.e("jjj", "Starting to analyze")
-            val analyzedResponse = analyze()
-            val requestId = analyzedResponse.headers().get("apim-request-id")
-            Log.e("jjj", "Got request ID -> $requestId")
-            Log.e("jjj", "Waiting 10 seconds")
-            delay(10000)
-            val analyzedResultResponse = analyzeResults(requestId!!)
-            Log.e("jjj", "Result ->\n${analyzedResultResponse.body()}")
-        } catch (e: Exception) {
-            Log.e("jjj", "Error -> ${e.message}")
-        }
+        Log.e("jjj", "Starting to analyze")
+        val analyzedResponse = analyze()
+        val requestId = analyzedResponse.headers().get("apim-request-id")
+        Log.e("jjj", "Got request ID -> $requestId")
+        val analyzedResultResponse = analyzeResults(requestId!!)
+        Log.e("jjj", "Result ->\n${analyzedResultResponse.body()}")
     }
 
     private suspend fun analyze(): Response<String> {
