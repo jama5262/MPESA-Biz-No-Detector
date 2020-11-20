@@ -13,6 +13,10 @@ interface AzureVisionService {
         @Header("Ocp-Apim-Subscription-Key") key: String
     ): Response<String>
 
-    @GET("analyzeResults")
-    suspend fun analyzeResults()
+    @Headers("Content-Type: application/json")
+    @GET("analyzeResults/{requestId}")
+    suspend fun analyzeResults(
+        @Header("Ocp-Apim-Subscription-Key") key: String,
+        @Path("requestId") requestId: String
+    ): Response<String>
 }

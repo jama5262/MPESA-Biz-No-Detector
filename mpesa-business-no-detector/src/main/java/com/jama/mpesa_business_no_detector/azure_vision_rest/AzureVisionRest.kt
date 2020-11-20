@@ -2,6 +2,7 @@ package com.jama.mpesa_business_no_detector.azure_vision_rest
 
 import android.util.Log
 import com.jama.mpesa_business_no_detector.utils.Constants
+import kotlinx.coroutines.delay
 import okhttp3.MediaType
 import okhttp3.RequestBody
 import retrofit2.Response
@@ -27,7 +28,11 @@ class AzureVisionRest(
             Log.e("jjj", "Starting to analyze")
             val analyzedResponse = analyze()
             val requestId = analyzedResponse.headers().get("apim-request-id")
-            Log.e("jjj", "$requestId")
+            Log.e("jjj", "Got request ID -> $requestId")
+            Log.e("jjj", "Waiting 10 seconds")
+            delay(10000)
+            val analyzedResultResponse = analyzeResults(requestId!!)
+            Log.e("jjj", "Result ->\n${analyzedResultResponse.body()}")
         } catch (e: Exception) {
             Log.e("jjj", "Error -> ${e.message}")
         }
@@ -40,5 +45,9 @@ class AzureVisionRest(
             byteArray
         )
         return azureVisionService.analyze(requestBody, contentType, azureVisionKey)
+    }
+
+    private suspend fun analyzeResults(requestId: String): Response<String> {
+        return azureVisionService.analyzeResults(azureVisionKey, requestId)
     }
 }
