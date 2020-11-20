@@ -1,6 +1,5 @@
-package com.jama.mpesa_business_no_detector.azure_vision_rest
+package com.jama.mpesa_business_no_detector.azureVisionRest
 
-import android.util.Log
 import com.jama.mpesa_business_no_detector.models.VisionResult
 import com.jama.mpesa_business_no_detector.utils.Constants
 import okhttp3.MediaType

@@ -1,4 +1,4 @@
-package com.jama.mpesa_business_no_detector.azure_vision_rest
+package com.jama.mpesa_business_no_detector.azureVisionRest
 
 import com.jama.mpesa_business_no_detector.models.VisionResult
 import okhttp3.RequestBody
