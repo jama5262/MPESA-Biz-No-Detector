@@ -6,10 +6,13 @@ import retrofit2.http.*
 
 interface AzureVisionService {
 
-    @Headers("Content-Type: application/octet-stream")
-    @POST("read/analyze")
-    suspend fun postVisionRequest(
+    @POST("analyze")
+    suspend fun analyze(
         @Body bytes: RequestBody,
+        @Header("Content-Type") contentType: String,
         @Header("Ocp-Apim-Subscription-Key") key: String
     ): Response<String>
+
+    @GET("analyzeResults")
+    suspend fun analyzeResults()
 }

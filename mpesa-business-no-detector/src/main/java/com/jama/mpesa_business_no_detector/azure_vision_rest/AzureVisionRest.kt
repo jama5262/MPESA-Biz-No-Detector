@@ -1,9 +1,9 @@
 package com.jama.mpesa_business_no_detector.azure_vision_rest
 
 import android.util.Log
+import com.jama.mpesa_business_no_detector.utils.Constants
 import okhttp3.MediaType
 import okhttp3.RequestBody
-import retrofit2.Call
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.scalars.ScalarsConverterFactory
@@ -20,21 +20,25 @@ class AzureVisionRest(
         .addConverterFactory(ScalarsConverterFactory.create())
         .build()
 
+    private val azureVisionService = retrofit.create(AzureVisionService::class.java)
+
     suspend fun startVision() {
         try {
-            val postResponse = sendPostRequest()
-            val headers = postResponse.headers()
+            Log.e("jjj", "Starting to analyze")
+            val analyzedResponse = analyze()
+            val requestId = analyzedResponse.headers().get("apim-request-id")
+            Log.e("jjj", "$requestId")
         } catch (e: Exception) {
             Log.e("jjj", "Error -> ${e.message}")
         }
     }
 
-    private suspend fun sendPostRequest(): Response<String> {
-        val azureVisionService = retrofit.create(AzureVisionService::class.java)
+    private suspend fun analyze(): Response<String> {
+        val contentType = Constants.CONTENT_TYPE
         val requestBody = RequestBody.create(
-            MediaType.parse("application/octet-stream"),
+            MediaType.parse(contentType),
             byteArray
         )
-        return azureVisionService.postVisionRequest(requestBody, azureVisionKey)
+        return azureVisionService.analyze(requestBody, contentType, azureVisionKey)
     }
 }
