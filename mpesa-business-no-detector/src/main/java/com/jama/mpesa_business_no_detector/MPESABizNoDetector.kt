@@ -16,8 +16,8 @@ class MPESABizNoDetector(
 
     suspend fun detect(bitmap: Bitmap) {
         val byteArray = bitmap.toByteArray()
-        val azureVisionRest = AzureVisionRest(baseUrl2, azureVisionKey, byteArray)
-        azureVisionRest.getTodos()
+        val azureVisionRest = AzureVisionRest(baseUrl, azureVisionKey, byteArray)
+        azureVisionRest.startVision()
     }
 
 }

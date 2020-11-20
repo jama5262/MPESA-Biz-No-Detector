@@ -1,7 +1,9 @@
 package com.jama.mpesa_business_no_detector.azure_vision_rest
 
 import android.util.Log
+import com.jama.mpesa_business_no_detector.models.VisionResult
 import com.jama.mpesa_business_no_detector.utils.Constants
+import com.squareup.moshi.Moshi
 import kotlinx.coroutines.delay
 import okhttp3.MediaType
 import okhttp3.RequestBody
@@ -15,7 +17,6 @@ class AzureVisionRest(
     private val azureVisionKey: String,
     private val byteArray: ByteArray
 ) {
-
     private val retrofit: Retrofit = Retrofit.Builder()
         .baseUrl(baseUrl)
         .addConverterFactory(MoshiConverterFactory.create())
@@ -25,9 +26,12 @@ class AzureVisionRest(
 
     suspend fun startVision() {
         Log.e("jjj", "Starting to analyze")
-        val analyzedResponse = analyze()
-        val requestId = analyzedResponse.headers().get("apim-request-id")
+//        val analyzedResponse = analyze()
+//        val requestId = analyzedResponse.headers().get("apim-request-id")
+        val requestId = "99f865b0-840a-45c8-850e-f9160113deb7"
         Log.e("jjj", "Got request ID -> $requestId")
+//        Log.e("jjj", "Waiting for 10 seconds")
+//        delay(10000)
         val analyzedResultResponse = analyzeResults(requestId!!)
         Log.e("jjj", "Result ->\n${analyzedResultResponse.body()}")
     }
@@ -46,7 +50,7 @@ class AzureVisionRest(
         return azureVisionService.analyze(requestBody, contentType, azureVisionKey)
     }
 
-    private suspend fun analyzeResults(requestId: String): Response<String> {
+    private suspend fun analyzeResults(requestId: String): Response<VisionResult> {
         return azureVisionService.analyzeResults(azureVisionKey, requestId)
     }
 }
