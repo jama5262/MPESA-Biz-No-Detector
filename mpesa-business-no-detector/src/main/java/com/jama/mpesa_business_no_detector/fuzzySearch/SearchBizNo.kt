@@ -37,16 +37,15 @@ class SearchBizNo {
     }
 
     private fun fuzzySearchIndex(query: String): Int {
-        val matchIndex = FuzzySearch.extractSorted(query, foo, cutOff).map { it.index }
-        return if (matchIndex.isNotEmpty()) matchIndex[0] else -1
+        val matchedIndex = FuzzySearch.extractSorted(query, foo, cutOff).map { it.index }
+        return if (matchedIndex.isNotEmpty()) matchedIndex[0] else -1
     }
 
     private fun getMatchedIndex(queries: List<String>): Int {
         var matchedIndex = -1
-        queries.forEach {
-            if (matchedIndex == -1) {
-                matchedIndex = fuzzySearchIndex(it)
-            }
+        for (query in queries) {
+            matchedIndex = fuzzySearchIndex(query)
+            if (matchedIndex != -1) break
         }
         return matchedIndex
     }
