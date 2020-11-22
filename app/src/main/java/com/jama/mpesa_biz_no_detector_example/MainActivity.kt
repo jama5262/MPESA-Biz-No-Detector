@@ -17,6 +17,7 @@ import java.lang.Exception
 class MainActivity : AppCompatActivity() {
 
     private val mpesaBizNoDetector = MPESABizNoDetector(
+        this,
         Constants.AZURE_VISION_KEY,
         Constants.AZURE_VISION_ENDPOINT
     )
@@ -29,8 +30,9 @@ class MainActivity : AppCompatActivity() {
             lifecycleScope.launch(Dispatchers.IO) {
                 try {
                     val bitmap = getBitmap() ?: throw Exception("Bitmap Not found")
-                    val detectedBizNo = mpesaBizNoDetector.detect(bitmap)
-                    Log.e("jjj", "$detectedBizNo")
+//                    val detectedBizNo = mpesaBizNoDetector.detect(bitmap)
+//                    Log.e("jjj", "$detectedBizNo")
+                    mpesaBizNoDetector.startActivity()
                 } catch (e: Exception) {
                     Log.e("jjj", "Error found -> ${e.message}")
                 }
