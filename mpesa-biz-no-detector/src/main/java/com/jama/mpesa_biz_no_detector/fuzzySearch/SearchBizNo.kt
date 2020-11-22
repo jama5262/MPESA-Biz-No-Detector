@@ -1,41 +1,13 @@
 package com.jama.mpesa_biz_no_detector.fuzzySearch
 
-import android.util.Log
 import com.jama.mpesa_biz_no_detector.BizNoType
 import com.jama.mpesa_biz_no_detector.models.DetectedBizNo
 import com.jama.mpesa_biz_no_detector.utils.cleanBizNo
 import me.xdrop.fuzzywuzzy.FuzzySearch
 
-class SearchBizNo {
+class SearchBizNo(private val choices: List<String>) {
 
     private val cutOff = 70
-    val foo = listOf(
-        "BUY AIRTIME",
-
-                "WITH MPESA",
-
-                "LIPA NA m~",
-
-    "PESA",
-
-    "PAYBILL NO.",
-
-    "7 70 71 1",
-
-    "Acc",
-
-    "airtel",
-
-    "Telkom",
-
-    "Safaricom",
-
-    "Twaweza",
-
-    "TELSAN NETWORKS",
-
-    "Call, Text or WhatsApp 0700900092"
-    )
 
     private val tillNoQueries = listOf("buy goods till", "buy goods", "till")
     private val paybillNoQueries = listOf("paybill", "pay bill")
@@ -53,8 +25,13 @@ class SearchBizNo {
             type = BizNoType.PAYBILL_NUMBER
         }
 
-        val businessNo = if (businessNoMatchedIndex != -1) foo[businessNoMatchedIndex + 1] else null
-        val accountNo = if (accountNoMatchedIndex != -1) foo[accountNoMatchedIndex + 1] else null
+        val businessNo = if (businessNoMatchedIndex != -1) {
+            choices.getOrNull(businessNoMatchedIndex + 1)
+        } else null
+
+        val accountNo = if (accountNoMatchedIndex != -1) {
+            choices.getOrNull(accountNoMatchedIndex + 1)
+        } else null
 
         if (businessNo == null) return null
 
@@ -66,7 +43,7 @@ class SearchBizNo {
     }
 
     private fun performFuzzySearchIndex(query: String): Int {
-        val matchedIndex = FuzzySearch.extractSorted(query, foo, cutOff).map { it.index }
+        val matchedIndex = FuzzySearch.extractSorted(query, choices, cutOff).map { it.index }
         return if (matchedIndex.isNotEmpty()) matchedIndex[0] else -1
     }
 

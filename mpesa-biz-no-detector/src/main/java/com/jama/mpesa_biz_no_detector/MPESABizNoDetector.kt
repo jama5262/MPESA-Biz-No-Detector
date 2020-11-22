@@ -28,7 +28,7 @@ class MPESABizNoDetector(
     }
 
     private fun performFuzzySearch(): DetectedBizNo? {
-        return SearchBizNo().search()
+        return SearchBizNo(listOf()).search()
     }
 
 }
