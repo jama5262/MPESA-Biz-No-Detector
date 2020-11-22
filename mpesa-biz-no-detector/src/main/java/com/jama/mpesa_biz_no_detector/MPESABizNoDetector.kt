@@ -3,6 +3,7 @@ package com.jama.mpesa_biz_no_detector
 import android.app.Activity
 import android.content.Intent
 import android.graphics.Bitmap
+import androidx.fragment.app.Fragment
 import com.jama.mpesa_biz_no_detector.azureVisionRest.AzureVisionRest
 import com.jama.mpesa_biz_no_detector.fuzzySearch.SearchBizNo
 import com.jama.mpesa_biz_no_detector.models.DetectedBizNo
@@ -12,16 +13,21 @@ import com.jama.mpesa_biz_no_detector.utils.Constants
 import com.jama.mpesa_biz_no_detector.utils.toByteArray
 
 class MPESABizNoDetector(
-    private val activity: Activity,
     private val azureVisionKey: String,
     azureVisionEndPoint: String
 ) {
 
     private val baseUrl = "$azureVisionEndPoint${Constants.READ_API_ENDPOINT}"
+    private val activityClass = MPESABizNoDetectorActivity::class.java
 
-    fun startActivity() {
-        val intent = Intent(activity, MPESABizNoDetectorActivity::class.java)
-        activity.startActivity(intent)
+    fun start(activity: Activity, requestCode: Int) {
+        val intent = Intent(activity, activityClass)
+        activity.startActivityForResult(intent, requestCode)
+    }
+
+    fun start(fragment: Fragment, requestCode: Int) {
+        val intent = Intent(fragment.context, activityClass)
+        fragment.startActivityForResult(intent, requestCode)
     }
 
     suspend fun detect(bitmap: Bitmap): DetectedBizNo {
