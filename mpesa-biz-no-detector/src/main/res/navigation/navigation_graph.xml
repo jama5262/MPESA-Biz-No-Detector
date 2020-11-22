@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/cameraFragment">
+
+    <fragment
+        android:id="@+id/cameraFragment"
+        android:name="com.jama.mpesa_biz_no_detector.ui.fragments.CameraFragment"
+        android:label="fragment_camera"
+        tools:layout="@layout/fragment_camera" >
+        <action
+            android:id="@+id/action_cameraFragment_to_failFragment"
+            app:destination="@id/failFragment" />
+        <action
+            android:id="@+id/action_cameraFragment_to_successFragment"
+            app:destination="@id/successFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/failFragment"
+        android:name="com.jama.mpesa_biz_no_detector.ui.fragments.FailFragment"
+        android:label="fragment_fail"
+        tools:layout="@layout/fragment_fail" />
+    <fragment
+        android:id="@+id/successFragment"
+        android:name="com.jama.mpesa_biz_no_detector.ui.fragments.SuccessFragment"
+        android:label="fragment_success"
+        tools:layout="@layout/fragment_success" />
+</navigation>

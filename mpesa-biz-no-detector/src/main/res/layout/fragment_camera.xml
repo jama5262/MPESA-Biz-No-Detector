@@ -4,28 +4,26 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    tools:context=".ui.fragments.CameraFragment">
 
     <Button
-        android:id="@+id/buttonGetStarted"
-        style="@style/Widget.AppCompat.Button"
+        android:id="@+id/buttonSuccess"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Button Activity"
+        android:text="Success"
+        app:layout_constraintBottom_toTopOf="@+id/buttoFail"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <androidx.fragment.app.FragmentContainerView
-        android:id="@+id/navHost"
-        android:name="androidx.navigation.fragment.NavHostFragment"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        app:defaultNavHost="true"
+    <Button
+        android:id="@+id/buttoFail"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Fail"
         app:layout_constraintBottom_toBottomOf="parent"
-
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/buttonGetStarted"
-        app:navGraph="@navigation/nav_graph" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/buttonSuccess" />
 </androidx.constraintlayout.widget.ConstraintLayout>
