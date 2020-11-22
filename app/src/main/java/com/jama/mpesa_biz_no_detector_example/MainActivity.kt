@@ -29,7 +29,8 @@ class MainActivity : AppCompatActivity() {
             lifecycleScope.launch(Dispatchers.IO) {
                 try {
                     val bitmap = getBitmap() ?: throw Exception("Bitmap Not found")
-                    mpesaBizNoDetector.detect(bitmap)
+                    val detectedBizNo = mpesaBizNoDetector.detect(bitmap)
+                    Log.e("jjj", "$detectedBizNo")
                 } catch (e: Exception) {
                     Log.e("jjj", "Error found -> ${e.message}")
                 }
@@ -40,7 +41,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun getBitmap(): Bitmap? {
         val assetManager: AssetManager = assets
-        val istr: InputStream = assetManager.open("image1.jpg")
+        val istr: InputStream = assetManager.open("image.jpg")
         val bitmap = BitmapFactory.decodeStream(istr)
         istr.close()
         return bitmap
