@@ -13,7 +13,7 @@ android {
     buildToolsVersion "30.0.2"
 
     defaultConfig {
-        applicationId "com.jama.mpesa_business_no_detector_example"
+        applicationId "com.jama.mpesa_biz_no_detector_example"
         minSdkVersion 16
         targetSdkVersion 30
         versionCode 1
@@ -49,7 +49,7 @@ dependencies {
     implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
 
     implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.2.0'
-    implementation project(path: ':mpesa-business-no-detector')
+    implementation project(path: ':mpesa-biz-no-detector')
 
     testImplementation 'junit:junit:4.+'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
