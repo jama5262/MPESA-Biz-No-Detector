@@ -6,13 +6,16 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.camera.core.CameraSelector
+import androidx.camera.core.ImageAnalysis
 import androidx.camera.core.Preview
 import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.google.common.util.concurrent.ListenableFuture
 import com.jama.mpesa_biz_no_detector.R
+import com.jama.mpesa_biz_no_detector.camera.CameraAnalyzer
 import kotlinx.android.synthetic.main.fragment_camera.view.*
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
@@ -49,12 +52,20 @@ class CameraFragment : Fragment() {
                     it.setSurfaceProvider(rootView.viewFinder.surfaceProvider)
                 }
 
+            val imageAnalyzer = ImageAnalysis.Builder()
+                .setBackpressureStrategy(ImageAnalysis.STRATEGY_KEEP_ONLY_LATEST)
+                .build()
+                .also {
+                    it.setAnalyzer(cameraExecutor, CameraAnalyzer(lifecycleScope, rootView.graphOverlay))
+                }
+
             try {
                 cameraProvider.unbindAll()
                 cameraProvider.bindToLifecycle(
                     this,
                     CameraSelector.DEFAULT_BACK_CAMERA,
-                    preview
+                    preview,
+                    imageAnalyzer
                 )
             } catch (exc: Exception) {
                 Log.e("jjj", "Use case binding failed", exc)
