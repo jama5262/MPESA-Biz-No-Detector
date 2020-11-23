@@ -29,8 +29,8 @@ class CameraAnalyzer(
             scope.launch {
                 try {
                     val bitmap = mediaImage.toBitmap()
-                    val detectedObject = objectDetection.detect(bitmap, rotation)
-                    graphicsOverlayController.start(detectedObject, getImageDimension(imageProxy))
+                    val detectionResult = objectDetection.detect(bitmap, rotation)
+                    graphicsOverlayController.start(detectionResult, getImageDimension(imageProxy))
                 } catch (e: ObjectDetectionException) {
                     Log.e("jjj", "Object detection error -> ${e.message}")
                 } catch (e: Exception) {

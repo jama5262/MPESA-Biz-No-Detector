@@ -6,7 +6,6 @@ import com.google.mlkit.vision.common.InputImage
 import com.google.mlkit.vision.objects.DetectedObject
 import com.google.mlkit.vision.objects.ObjectDetection
 import com.google.mlkit.vision.objects.defaults.ObjectDetectorOptions
-import com.jama.mpesa_biz_no_detector.utils.NoObjectDetected
 import com.jama.mpesa_biz_no_detector.utils.ObjectDetectionException
 import com.jama.mpesa_biz_no_detector.utils.resize
 import com.jama.mpesa_biz_no_detector.utils.rotate
@@ -28,8 +27,8 @@ class ObjectDetection {
             val image = InputImage.fromBitmap(bitmap, rotation)
             objectDetector.process(image)
                 .addOnSuccessListener {
-                    val detectedObject = getDetectedObjects(bitmap, rotation, it)
-                    continuation.resume(detectedObject)
+                    val detectionResult = getDetectedResult(bitmap, rotation, it)
+                    continuation.resume(detectionResult)
                 }
                 .addOnFailureListener {
                     continuation.resumeWithException(ObjectDetectionException("Object detection error -> ${it.message}"))
@@ -37,7 +36,7 @@ class ObjectDetection {
         }
     }
 
-    private fun getDetectedObjects(
+    private fun getDetectedResult(
         bitmap: Bitmap,
         rotation: Int,
         detectedObjects: List<DetectedObject>
