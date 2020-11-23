@@ -25,15 +25,14 @@ class FirstFragment : Fragment() {
     private lateinit var rootView: View
 
     private val mpesaBizNoDetector = MPESABizNoDetector(
-        Constants.AZURE_VISION_KEY,
-        Constants.AZURE_VISION_ENDPOINT
+        Constants.AZURE_VISION_ENDPOINT,
+        Constants.AZURE_VISION_KEY
     )
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
         rootView = inflater.inflate(R.layout.fragment_first, container, false)
 
         rootView.button2.setOnClickListener {
