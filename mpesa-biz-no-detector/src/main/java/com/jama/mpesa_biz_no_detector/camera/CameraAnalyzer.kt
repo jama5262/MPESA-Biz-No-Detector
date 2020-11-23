@@ -14,7 +14,7 @@ import kotlinx.coroutines.launch
 
 class CameraAnalyzer(
     private val scope: CoroutineScope,
-    private val graphicOverlay: GraphicOverlay
+    graphicOverlay: GraphicOverlay
 ) : ImageAnalysis.Analyzer {
 
     private val objectDetection = ObjectDetection()

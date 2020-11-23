@@ -22,7 +22,7 @@ class ObjectDetection {
 
     private val objectDetector = ObjectDetection.getClient(options)
 
-    suspend fun detect(bitmap: Bitmap, rotation: Int): Pair<Bitmap, Rect>? {
+    suspend fun detect(bitmap: Bitmap, rotation: Int): Triple<Bitmap, Rect, Int>? {
         return suspendCoroutine { continuation ->
             val image = InputImage.fromBitmap(bitmap, rotation)
             objectDetector.process(image)
@@ -40,15 +40,17 @@ class ObjectDetection {
         bitmap: Bitmap,
         rotation: Int,
         detectedObjects: List<DetectedObject>
-    ): Pair<Bitmap, Rect>? {
+    ): Triple<Bitmap, Rect, Int>? {
         var boundingBox = Rect()
         var detectedBitmap: Bitmap? = null
+        var trackingId = 0
         for (detectedObject in detectedObjects) {
             boundingBox = detectedObject.boundingBox
             detectedBitmap = bitmap.rotate(rotation).resize(boundingBox)
+            trackingId = detectedObject.trackingId!!
         }
         if (detectedBitmap == null) return null
-        return Pair(detectedBitmap, boundingBox)
+        return Triple(detectedBitmap, boundingBox, trackingId)
     }
 
     fun closeDetection() {

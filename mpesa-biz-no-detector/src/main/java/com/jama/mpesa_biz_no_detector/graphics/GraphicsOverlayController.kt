@@ -6,10 +6,12 @@ import android.graphics.RectF
 
 class GraphicsOverlayController(private val graphicOverlay: GraphicOverlay) {
 
+    private val confirmationController = ObjectConfirmationController()
+
     private var scaleFactorX = 1.0f
     private var scaleFactorY = 1.0f
 
-    fun start(detectionResult: Pair<Bitmap, Rect>?, imageDimensions: Pair<Float, Float>) {
+    fun start(detectionResult: Triple<Bitmap, Rect, Int>?, imageDimensions: Pair<Float, Float>) {
 
         scaleFactorY = graphicOverlay.height.toFloat() / imageDimensions.second
         scaleFactorX = graphicOverlay.width.toFloat() / imageDimensions.first
@@ -17,17 +19,22 @@ class GraphicsOverlayController(private val graphicOverlay: GraphicOverlay) {
         graphicOverlay.clear()
 
         if (detectionResult == null) {
+            confirmationController.reset()
             graphicOverlay.add(ObjectReticleGraphic())
         } else {
             if (objectBoxOverlapsConfirmationReticle(detectionResult.second)) {
                 // User is confirming the object selection.
+                confirmationController.confirming(detectionResult.third)
                 graphicOverlay.add(
                     ObjectDetectedGraphic(translateRect(detectionResult.second))
                 )
-                graphicOverlay.add(ObjectConfirmationGraphic())
+                if (!confirmationController.isConfirmed) {
+                    graphicOverlay.add(ObjectConfirmationGraphic(confirmationController))
+                }
             } else {
                 // Object is detected but the confirmation reticle is moved off the object box, which
                 // indicates user is not trying to pick this object.
+                confirmationController.reset()
                 graphicOverlay.add(
                     ObjectDetectedGraphic(translateRect(detectionResult.second))
                 )
