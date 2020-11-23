@@ -23,17 +23,13 @@ class ObjectDetection {
 
     private val objectDetector = ObjectDetection.getClient(options)
 
-    suspend fun detect(bitmap: Bitmap, rotation: Int): Pair<Bitmap, Rect> {
+    suspend fun detect(bitmap: Bitmap, rotation: Int): Pair<Bitmap, Rect>? {
         return suspendCoroutine { continuation ->
             val image = InputImage.fromBitmap(bitmap, rotation)
             objectDetector.process(image)
                 .addOnSuccessListener {
                     val detectedObject = getDetectedObjects(bitmap, rotation, it)
-                    if (detectedObject != null) {
-                        continuation.resume(detectedObject)
-                    } else {
-                        continuation.resumeWithException(NoObjectDetected())
-                    }
+                    continuation.resume(detectedObject)
                 }
                 .addOnFailureListener {
                     continuation.resumeWithException(ObjectDetectionException("Object detection error -> ${it.message}"))

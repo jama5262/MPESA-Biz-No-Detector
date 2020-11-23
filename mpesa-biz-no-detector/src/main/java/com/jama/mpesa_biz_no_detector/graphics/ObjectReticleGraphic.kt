@@ -1,9 +1,8 @@
-package com.jama.mpesa_biz_no_detector.objectDetection
+package com.jama.mpesa_biz_no_detector.graphics
 
 import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Paint
-import com.jama.mpesa_biz_no_detector.camera.Graphic
 
 class ObjectReticleGraphic: Graphic {
 

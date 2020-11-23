@@ -1,4 +1,4 @@
-package com.jama.mpesa_biz_no_detector.camera
+package com.jama.mpesa_biz_no_detector.graphics
 
 import android.content.Context
 import android.graphics.*
@@ -16,8 +16,6 @@ class GraphicOverlay: View {
         defStyleAttr: Int
     ) : super(context, attrs, defStyleAttr)
 
-    private var detectionOverlay = RectF()
-    private val reticleOverlay = Rect()
     private val graphics = mutableListOf<Graphic>()
     private val paint = Paint()
 
@@ -32,22 +30,6 @@ class GraphicOverlay: View {
         }
     }
 
-//    fun updateRect(rect: Rect, image: Pair<Int, Int>) {
-//        scaleFactorY = height.toFloat() / image.second
-//        scaleFactorX = width.toFloat() / image.first
-//
-//        detectionOverlay = translateRect(rect)
-//        val centerWidth = width / 2
-//        val centerHeight = height / 2
-//        reticleOverlay.apply {
-//            left = centerWidth - 20
-//            top = centerHeight - 20
-//            right = centerWidth + 20
-//            bottom = centerHeight + 20
-//        }
-//        postInvalidate()
-//    }
-
     fun add(graphic: Graphic) {
         graphics.add(graphic)
     }
@@ -56,16 +38,6 @@ class GraphicOverlay: View {
         graphics.clear()
         postInvalidate()
     }
-
-    private fun translateRect(rect: Rect) = RectF(
-        translateX(rect.left.toFloat()),
-        translateY(rect.top.toFloat()),
-        translateX(rect.right.toFloat()),
-        translateY(rect.bottom.toFloat())
-    )
-
-    private fun translateX(x: Float): Float = x * scaleFactorX
-    private fun translateY(y: Float): Float = y * scaleFactorY
 
     override fun onDraw(canvas: Canvas) {
         super.onDraw(canvas)

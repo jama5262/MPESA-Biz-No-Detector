@@ -4,9 +4,9 @@ import android.annotation.SuppressLint
 import android.util.Log
 import androidx.camera.core.ImageAnalysis
 import androidx.camera.core.ImageProxy
+import com.jama.mpesa_biz_no_detector.graphics.GraphicOverlay
+import com.jama.mpesa_biz_no_detector.graphics.GraphicsOverlayController
 import com.jama.mpesa_biz_no_detector.objectDetection.ObjectDetection
-import com.jama.mpesa_biz_no_detector.objectDetection.ObjectReticleGraphic
-import com.jama.mpesa_biz_no_detector.utils.NoObjectDetected
 import com.jama.mpesa_biz_no_detector.utils.ObjectDetectionException
 import com.jama.mpesa_biz_no_detector.utils.toBitmap
 import kotlinx.coroutines.CoroutineScope
@@ -18,6 +18,7 @@ class CameraAnalyzer(
 ) : ImageAnalysis.Analyzer {
 
     private val objectDetection = ObjectDetection()
+    private val graphicsOverlayController = GraphicsOverlayController(graphicOverlay)
 
     @SuppressLint("UnsafeExperimentalUsageError")
     override fun analyze(imageProxy: ImageProxy) {
@@ -27,16 +28,9 @@ class CameraAnalyzer(
         if (mediaImage != null) {
             scope.launch {
                 try {
-//                    val bitmap = mediaImage.toBitmap()
-//                    val detectedObject = objectDetection.detect(bitmap, rotation)
-//                    val boundingBox = detectedObject.second
-//                    val imageDim = getImageDimension(imageProxy)
-//                    graphicOverlay.updateRect(boundingBox, imageDim)
-
-                    graphicOverlay.clear()
-                    graphicOverlay.add(ObjectReticleGraphic())
-                } catch (e: NoObjectDetected) {
-                    Log.e("jjj", "No object detected clear graph overlay")
+                    val bitmap = mediaImage.toBitmap()
+                    val detectedObject = objectDetection.detect(bitmap, rotation)
+                    graphicsOverlayController.start(detectedObject, getImageDimension(imageProxy))
                 } catch (e: ObjectDetectionException) {
                     Log.e("jjj", "Object detection error -> ${e.message}")
                 } catch (e: Exception) {
@@ -48,7 +42,7 @@ class CameraAnalyzer(
         }
     }
 
-    private fun getImageDimension(imageProxy: ImageProxy): Pair<Int, Int> {
-        return Pair(imageProxy.height, imageProxy.width)
+    private fun getImageDimension(imageProxy: ImageProxy): Pair<Float, Float> {
+        return Pair(imageProxy.height.toFloat(), imageProxy.width.toFloat())
     }
 }
