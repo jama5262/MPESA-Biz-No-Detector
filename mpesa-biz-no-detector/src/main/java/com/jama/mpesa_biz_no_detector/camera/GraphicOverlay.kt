@@ -3,9 +3,10 @@ package com.jama.mpesa_biz_no_detector.camera
 import android.content.Context
 import android.graphics.*
 import android.util.AttributeSet
+import android.util.Log
 import android.view.View
 
-class GraphOverlay: View {
+class GraphicOverlay: View {
 
     constructor(context: Context) : super(context)
     constructor(context: Context, attr: AttributeSet? = null) : super(context, attr)
@@ -17,6 +18,7 @@ class GraphOverlay: View {
 
     private var detectionOverlay = RectF()
     private val reticleOverlay = Rect()
+    private val graphics = mutableListOf<Graphic>()
     private val paint = Paint()
 
     private var scaleFactorX = 1.0f
@@ -30,19 +32,28 @@ class GraphOverlay: View {
         }
     }
 
-    fun updateRect(rect: Rect, image: Pair<Int, Int>) {
-        scaleFactorY = height.toFloat() / image.second
-        scaleFactorX = width.toFloat() / image.first
+//    fun updateRect(rect: Rect, image: Pair<Int, Int>) {
+//        scaleFactorY = height.toFloat() / image.second
+//        scaleFactorX = width.toFloat() / image.first
+//
+//        detectionOverlay = translateRect(rect)
+//        val centerWidth = width / 2
+//        val centerHeight = height / 2
+//        reticleOverlay.apply {
+//            left = centerWidth - 20
+//            top = centerHeight - 20
+//            right = centerWidth + 20
+//            bottom = centerHeight + 20
+//        }
+//        postInvalidate()
+//    }
 
-        detectionOverlay = translateRect(rect)
-        val centerWidth = width / 2
-        val centerHeight = height / 2
-        reticleOverlay.apply {
-            left = centerWidth - 20
-            top = centerHeight - 20
-            right = centerWidth + 20
-            bottom = centerHeight + 20
-        }
+    fun add(graphic: Graphic) {
+        graphics.add(graphic)
+    }
+
+    fun clear() {
+        graphics.clear()
         postInvalidate()
     }
 
@@ -56,10 +67,12 @@ class GraphOverlay: View {
     private fun translateX(x: Float): Float = x * scaleFactorX
     private fun translateY(y: Float): Float = y * scaleFactorY
 
-    override fun onDraw(canvas: Canvas?) {
+    override fun onDraw(canvas: Canvas) {
         super.onDraw(canvas)
-        canvas?.drawRect(detectionOverlay, paint)
-        canvas?.drawRect(reticleOverlay, paint)
+        Log.e("jjj", "draw -> ${graphics.size}")
+        graphics.forEach {
+            it.draw(canvas)
+        }
     }
 
 }
