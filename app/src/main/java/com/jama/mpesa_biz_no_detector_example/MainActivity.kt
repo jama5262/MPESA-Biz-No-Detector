@@ -32,8 +32,8 @@ class MainActivity : AppCompatActivity() {
             lifecycleScope.launch(Dispatchers.IO) {
                 try {
                     val bitmap = getBitmap() ?: throw Exception("Bitmap Not found")
-//                    mpesaBizNoDetector.start(this@MainActivity, 1)
-                    mpesaBizNoDetector.detect(bitmap)
+                    mpesaBizNoDetector.start(this@MainActivity, 1)
+//                    mpesaBizNoDetector.detect(bitmap)
                 } catch (e: Exception) {
                     Log.e("jjj", "Error found -> ${e.message}")
                 }
