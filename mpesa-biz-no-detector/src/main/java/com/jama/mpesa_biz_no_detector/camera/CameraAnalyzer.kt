@@ -7,18 +7,20 @@ import androidx.camera.core.ImageProxy
 import com.jama.mpesa_biz_no_detector.graphics.GraphicOverlay
 import com.jama.mpesa_biz_no_detector.graphics.GraphicsOverlayController
 import com.jama.mpesa_biz_no_detector.objectDetection.ObjectDetection
+import com.jama.mpesa_biz_no_detector.ui.fragments.CameraViewModel
 import com.jama.mpesa_biz_no_detector.utils.ObjectDetectionException
 import com.jama.mpesa_biz_no_detector.utils.toBitmap
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
 class CameraAnalyzer(
+    cameraViewModel: CameraViewModel,
     private val scope: CoroutineScope,
     graphicOverlay: GraphicOverlay
 ) : ImageAnalysis.Analyzer {
 
     private val objectDetection = ObjectDetection()
-    private val graphicsOverlayController = GraphicsOverlayController(graphicOverlay)
+    private val graphicsOverlayController = GraphicsOverlayController(cameraViewModel, graphicOverlay)
 
     @SuppressLint("UnsafeExperimentalUsageError")
     override fun analyze(imageProxy: ImageProxy) {

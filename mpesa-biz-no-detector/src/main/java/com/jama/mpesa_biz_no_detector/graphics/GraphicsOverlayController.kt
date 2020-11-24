@@ -3,8 +3,14 @@ package com.jama.mpesa_biz_no_detector.graphics
 import android.graphics.Bitmap
 import android.graphics.Rect
 import android.graphics.RectF
+import android.util.Log
+import com.jama.mpesa_biz_no_detector.enums.WorkflowState
+import com.jama.mpesa_biz_no_detector.ui.fragments.CameraViewModel
 
-class GraphicsOverlayController(private val graphicOverlay: GraphicOverlay) {
+class GraphicsOverlayController(
+    private val cameraViewModel: CameraViewModel,
+    private val graphicOverlay: GraphicOverlay
+) {
 
     private val confirmationController = ObjectConfirmationController()
 
@@ -19,26 +25,33 @@ class GraphicsOverlayController(private val graphicOverlay: GraphicOverlay) {
         graphicOverlay.clear()
 
         if (detectionResult == null) {
-            confirmationController.reset()
             graphicOverlay.add(ObjectReticleGraphic())
+            confirmationController.reset()
+            cameraViewModel.setWorkflowState(WorkflowState.DETECTING)
         } else {
             if (objectBoxOverlapsConfirmationReticle(detectionResult.second)) {
                 // User is confirming the object selection.
-                confirmationController.confirming(detectionResult.third)
                 graphicOverlay.add(
                     ObjectDetectedGraphic(translateRect(detectionResult.second))
                 )
+                cameraViewModel.confirmingObject(
+                    detectionResult.first,
+                    confirmationController.progress
+                )
+                confirmationController.confirming(detectionResult.third)
                 if (!confirmationController.isConfirmed) {
                     graphicOverlay.add(ObjectConfirmationGraphic(confirmationController))
                 }
             } else {
                 // Object is detected but the confirmation reticle is moved off the object box, which
                 // indicates user is not trying to pick this object.
+                cameraViewModel.setWorkflowState(WorkflowState.DETECTED)
                 confirmationController.reset()
                 graphicOverlay.add(
                     ObjectDetectedGraphic(translateRect(detectionResult.second))
                 )
                 graphicOverlay.add(ObjectReticleGraphic())
+                cameraViewModel.setWorkflowState(WorkflowState.DETECTED)
             }
         }
     }

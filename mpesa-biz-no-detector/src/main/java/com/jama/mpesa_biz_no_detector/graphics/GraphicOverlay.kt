@@ -41,7 +41,6 @@ class GraphicOverlay: View {
 
     override fun onDraw(canvas: Canvas) {
         super.onDraw(canvas)
-        Log.e("jjj", "draw -> ${graphics.size}")
         graphics.forEach {
             it.draw(canvas)
         }

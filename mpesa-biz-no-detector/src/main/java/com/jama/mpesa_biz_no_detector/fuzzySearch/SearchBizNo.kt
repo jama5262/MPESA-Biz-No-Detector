@@ -1,6 +1,6 @@
 package com.jama.mpesa_biz_no_detector.fuzzySearch
 
-import com.jama.mpesa_biz_no_detector.BizNoType
+import com.jama.mpesa_biz_no_detector.enums.BizNoType
 import com.jama.mpesa_biz_no_detector.models.DetectedBizNo
 import com.jama.mpesa_biz_no_detector.utils.Constants
 import com.jama.mpesa_biz_no_detector.utils.cleanBizNo

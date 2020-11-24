@@ -11,18 +11,24 @@ import androidx.camera.core.Preview
 import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.observe
 import androidx.navigation.fragment.findNavController
 import com.google.common.util.concurrent.ListenableFuture
 import com.jama.mpesa_biz_no_detector.R
 import com.jama.mpesa_biz_no_detector.camera.CameraAnalyzer
+import com.jama.mpesa_biz_no_detector.enums.WorkflowState
 import kotlinx.android.synthetic.main.fragment_camera.view.*
+import kotlinx.coroutines.delay
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 
 class CameraFragment : Fragment() {
 
     private lateinit var rootView: View
+
+    private val cameraViewModel: CameraViewModel by viewModels()
 
     private lateinit var cameraProviderFuture: ListenableFuture<ProcessCameraProvider>
     private lateinit var cameraExecutor: ExecutorService
@@ -39,11 +45,30 @@ class CameraFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         cameraExecutor = Executors.newSingleThreadExecutor()
+        setUpObservers()
         startCamera()
+        lifecycleScope
+    }
+
+    private fun setUpObservers() {
+        cameraViewModel.cameraMessage.observe(viewLifecycleOwner) {
+            rootView.textViewMessage.text = it
+        }
+
+        cameraViewModel.workflowState.observe(viewLifecycleOwner) {
+            when(it) {
+                WorkflowState.DETECTING, WorkflowState.DETECTED -> {
+                    rootView.textViewMessage.text = getString(R.string.camera_message_1)
+                }
+                WorkflowState.CONFIRMING -> {
+                    rootView.textViewMessage.text = getString(R.string.camera_message_2)
+                }
+                WorkflowState.CONFIRMED -> stopCamera()
+            }
+        }
     }
 
     private fun startCamera() {
-        val cameraProviderFuture = ProcessCameraProvider.getInstance(requireContext())
         cameraProviderFuture.addListener(Runnable {
             val cameraProvider: ProcessCameraProvider = cameraProviderFuture.get()
             val preview = Preview.Builder()
@@ -56,7 +81,7 @@ class CameraFragment : Fragment() {
                 .setBackpressureStrategy(ImageAnalysis.STRATEGY_KEEP_ONLY_LATEST)
                 .build()
                 .also {
-                    it.setAnalyzer(cameraExecutor, CameraAnalyzer(lifecycleScope, rootView.graphOverlay))
+                    it.setAnalyzer(cameraExecutor, CameraAnalyzer(cameraViewModel, lifecycleScope, rootView.graphOverlay))
                 }
 
             try {
@@ -72,6 +97,10 @@ class CameraFragment : Fragment() {
             }
 
         }, ContextCompat.getMainExecutor(requireContext()))
+    }
+
+    private fun stopCamera() {
+        cameraProviderFuture.get().unbindAll()
     }
 
     private fun navigateToSuccess() {

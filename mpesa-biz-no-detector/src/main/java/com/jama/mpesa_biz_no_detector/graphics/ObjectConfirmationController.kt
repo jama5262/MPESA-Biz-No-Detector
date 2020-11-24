@@ -23,7 +23,6 @@ class ObjectConfirmationController {
 
     fun confirming(objectId: Int?) {
         if (objectId == this.objectId) return
-
         reset()
         this.objectId = objectId
         countDownTimer.start()

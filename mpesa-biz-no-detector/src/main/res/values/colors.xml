@@ -3,4 +3,6 @@
     <color name="colorPrimary">#37B448</color>
     <color name="colorOnPrimary">#FFFFFF</color>
     <color name="colorSecondary">#FFFFFF</color>
+    <color name="colorSurface">#424242</color>
+    <color name="colorOnSurface">#FFFFFF</color>
 </resources>
