@@ -11,20 +11,16 @@
         android:label="fragment_camera"
         tools:layout="@layout/fragment_camera" >
         <action
-            android:id="@+id/action_cameraFragment_to_failFragment"
-            app:destination="@id/failFragment" />
-        <action
-            android:id="@+id/action_cameraFragment_to_successFragment"
-            app:destination="@id/successFragment" />
+            android:id="@+id/action_cameraFragment_to_resultsFragment"
+            app:destination="@id/resultsFragment" />
     </fragment>
     <fragment
-        android:id="@+id/failFragment"
-        android:name="com.jama.mpesa_biz_no_detector.ui.fragments.FailFragment"
-        android:label="fragment_fail"
-        tools:layout="@layout/fragment_fail" />
-    <fragment
-        android:id="@+id/successFragment"
-        android:name="com.jama.mpesa_biz_no_detector.ui.fragments.SuccessFragment"
-        android:label="fragment_success"
-        tools:layout="@layout/fragment_success" />
+        android:id="@+id/resultsFragment"
+        android:name="com.jama.mpesa_biz_no_detector.ui.fragments.ResultsFragment"
+        android:label="fragment_results"
+        tools:layout="@layout/fragment_results" >
+        <argument
+            android:name="bitmap"
+            app:argType="android.graphics.Bitmap" />
+    </fragment>
 </navigation>

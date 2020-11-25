@@ -15,6 +15,7 @@ import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.constraintlayout.widget.ConstraintSet
 import androidx.core.content.ContextCompat
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
@@ -26,6 +27,7 @@ import com.google.common.util.concurrent.ListenableFuture
 import com.jama.mpesa_biz_no_detector.R
 import com.jama.mpesa_biz_no_detector.camera.CameraAnalyzer
 import com.jama.mpesa_biz_no_detector.enums.WorkflowState
+import com.jama.mpesa_biz_no_detector.utils.navigateToFragment
 import kotlinx.android.synthetic.main.fragment_camera.view.*
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
@@ -105,6 +107,9 @@ class CameraFragment : Fragment() {
             onAnimationStart {
                 rootView.cameraLayout.addView(imageView)
             }
+            onAnimationEnd {
+                navigateToResult(bitmap)
+            }
             start()
         }
     }
@@ -149,12 +154,15 @@ class CameraFragment : Fragment() {
         cameraProviderFuture.get().unbindAll()
     }
 
-    private fun navigateToSuccess() {
-        findNavController().navigate(R.id.action_cameraFragment_to_successFragment)
-    }
+    private fun navigateToResult(bitmap: Bitmap) {
+        val bundle = bundleOf(
+            "bitmap" to bitmap
+        )
 
-    private fun navigateToFail() {
-        findNavController().navigate(R.id.action_cameraFragment_to_failFragment)
+        findNavController().navigateToFragment(
+            R.id.action_cameraFragment_to_resultsFragment,
+            bundle = bundle
+        )
     }
 
     override fun onDestroy() {
