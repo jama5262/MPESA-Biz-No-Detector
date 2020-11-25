@@ -1,7 +1,6 @@
 package com.jama.mpesa_biz_no_detector.ui.fragments
 
 import android.graphics.Bitmap
-import android.graphics.RectF
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -26,7 +25,7 @@ import com.example.android_animation.enums.Easing
 import com.google.common.util.concurrent.ListenableFuture
 import com.jama.mpesa_biz_no_detector.R
 import com.jama.mpesa_biz_no_detector.camera.CameraAnalyzer
-import com.jama.mpesa_biz_no_detector.enums.WorkflowState
+import com.jama.mpesa_biz_no_detector.enums.CameraFlowState
 import com.jama.mpesa_biz_no_detector.utils.navigateToFragment
 import kotlinx.android.synthetic.main.fragment_camera.view.*
 import java.util.concurrent.ExecutorService
@@ -59,22 +58,18 @@ class CameraFragment : Fragment() {
     }
 
     private fun setUpObservers() {
-        cameraViewModel.cameraMessage.observe(viewLifecycleOwner) {
-            rootView.textViewMessage.text = it
-        }
-
-        cameraViewModel.workflowState.observe(viewLifecycleOwner) {
+        cameraViewModel.cameraFlowState.observe(viewLifecycleOwner) {
             when (it) {
-                WorkflowState.DETECTING, WorkflowState.DETECTED -> {
+                CameraFlowState.DETECTING, CameraFlowState.DETECTED -> {
                     rootView.textViewMessage.text = getString(R.string.camera_message_1)
                 }
-                WorkflowState.CONFIRMING -> {
+                CameraFlowState.CONFIRMING -> {
                     rootView.textViewMessage.text = getString(R.string.camera_message_2)
                 }
-                WorkflowState.CONFIRMED -> {
-                    stopCamera()
-                    val bitmap = cameraViewModel.confirmedBitmap.value!!
-                    displayConfirmedImage(bitmap)
+                CameraFlowState.CONFIRMED -> {
+//                    stopCamera()
+//                    val bitmap = cameraViewModel.confirmedBitmap.value!!
+//                    displayConfirmedImage(bitmap)
                 }
             }
         }
@@ -94,8 +89,8 @@ class CameraFragment : Fragment() {
         }
         imageView.apply {
             this.layoutParams = layoutParams
-            layoutParams.height = (bitmap.height + 50).toDp()
-            layoutParams.width = (bitmap.width + 50).toDp()
+            layoutParams.height = bitmap.height.toDp()
+            layoutParams.width = bitmap.width.toDp()
             setImageBitmap(bitmap)
         }
         AndroidAnimation().apply {
@@ -114,9 +109,10 @@ class CameraFragment : Fragment() {
         }
     }
 
-    private fun Int.toDp() = (this * resources.displayMetrics.density).toInt()
+    private fun Int.toDp() = (this * resources.displayMetrics.density).toInt() + 50
 
     private fun startCamera() {
+        cameraViewModel.setCameraFlowState(CameraFlowState.DETECTING)
         cameraProviderFuture.addListener(Runnable {
             val cameraProvider: ProcessCameraProvider = cameraProviderFuture.get()
             val preview = Preview.Builder()

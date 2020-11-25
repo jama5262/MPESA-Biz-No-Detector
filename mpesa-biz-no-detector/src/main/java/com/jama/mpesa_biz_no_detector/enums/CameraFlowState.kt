@@ -1,6 +1,6 @@
 package com.jama.mpesa_biz_no_detector.enums
 
-enum class WorkflowState {
+enum class CameraFlowState {
     DETECTING,
     DETECTED,
     CONFIRMING,

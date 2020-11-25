@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="object_reticle_outer_ring_stroke_width">4dp</dimen>
+    <dimen name="object_reticle_inner_ring_stroke_width">2dp</dimen>
+    <dimen name="object_reticle_outer_ring_fill_radius">22dp</dimen>
+    <dimen name="object_reticle_outer_ring_stroke_radius">24dp</dimen>
+    <dimen name="object_reticle_inner_ring_stroke_radius">14dp</dimen>
+    <dimen name="object_reticle_ripple_size_offset">24dp</dimen>
+    <dimen name="object_reticle_ripple_stroke_width">4dp</dimen>
+</resources>
