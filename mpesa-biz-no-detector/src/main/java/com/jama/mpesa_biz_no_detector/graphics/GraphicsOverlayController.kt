@@ -43,7 +43,12 @@ class GraphicsOverlayController(
                 )
                 confirmationController.confirming(detectionResult.third)
                 if (!confirmationController.isConfirmed) {
-                    graphicOverlay.add(ObjectConfirmationGraphic(confirmationController))
+                    graphicOverlay.add(
+                        ObjectConfirmationGraphic(
+                            graphicOverlay,
+                            confirmationController
+                        )
+                    )
                 }
             } else {
                 // Object is detected but the confirmation reticle is moved off the object box, which

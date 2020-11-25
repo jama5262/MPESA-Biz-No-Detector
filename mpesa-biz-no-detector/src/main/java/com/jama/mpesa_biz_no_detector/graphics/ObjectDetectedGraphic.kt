@@ -9,7 +9,7 @@ class ObjectDetectedGraphic(private val boundingBox: RectF): Graphic {
     init {
         paint.apply {
             style = Paint.Style.STROKE
-            strokeWidth = 2f
+            strokeWidth = 20f
             color = Color.RED
         }
     }
