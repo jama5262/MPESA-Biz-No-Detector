@@ -12,7 +12,7 @@ class GraphicsOverlayController(
     private val graphicOverlay: GraphicOverlay
 ) {
 
-    private val confirmationController = ObjectConfirmationController()
+    private val objectConfirmationController = ObjectConfirmationController()
     private val cameraReticleAnimator = CameraReticleAnimator(graphicOverlay)
 
     private var scaleFactorX = 1.0f
@@ -28,25 +28,29 @@ class GraphicsOverlayController(
         if (detectionResult == null) {
             graphicOverlay.add(ObjectReticleGraphic(graphicOverlay, cameraReticleAnimator))
             cameraReticleAnimator.start()
-            confirmationController.reset()
+            objectConfirmationController.reset()
             cameraViewModel.setCameraFlowState(CameraFlowState.DETECTING)
         } else {
             if (objectBoxOverlapsConfirmationReticle(detectionResult.second)) {
                 // User is confirming the object selection.
                 cameraReticleAnimator.cancel()
                 graphicOverlay.add(
-                    ObjectDetectedGraphic(translateRect(detectionResult.second))
+                    ObjectDetectedGraphic(
+                        graphicOverlay,
+                        translateRect(detectionResult.second),
+                        objectConfirmationController
+                    )
                 )
                 cameraViewModel.confirmingObject(
                     detectionResult.first,
-                    confirmationController.progress
+                    objectConfirmationController.progress
                 )
-                confirmationController.confirming(detectionResult.third)
-                if (!confirmationController.isConfirmed) {
+                objectConfirmationController.confirming(detectionResult.third)
+                if (!objectConfirmationController.isConfirmed) {
                     graphicOverlay.add(
                         ObjectConfirmationGraphic(
                             graphicOverlay,
-                            confirmationController
+                            objectConfirmationController
                         )
                     )
                 }
@@ -54,9 +58,13 @@ class GraphicsOverlayController(
                 // Object is detected but the confirmation reticle is moved off the object box, which
                 // indicates user is not trying to pick this object.
                 cameraViewModel.setCameraFlowState(CameraFlowState.DETECTED)
-                confirmationController.reset()
+                objectConfirmationController.reset()
                 graphicOverlay.add(
-                    ObjectDetectedGraphic(translateRect(detectionResult.second))
+                    ObjectDetectedGraphic(
+                        graphicOverlay,
+                        translateRect(detectionResult.second),
+                        objectConfirmationController
+                    )
                 )
                 graphicOverlay.add(ObjectReticleGraphic(graphicOverlay, cameraReticleAnimator))
                 cameraReticleAnimator.start()

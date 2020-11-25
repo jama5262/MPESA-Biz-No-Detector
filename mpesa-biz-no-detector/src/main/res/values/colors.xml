@@ -8,5 +8,11 @@
 
     <color name="object_reticle_outer_ring_fill">#1F000000</color>
     <color name="object_reticle_outer_ring_stroke">#9AFFFFFF</color>
+    <color name="object_confirmed_bg_gradient_start">#40000000</color>
+    <color name="object_confirmed_bg_gradient_end">#A0000000</color>
+    <color name="object_detected_bg_gradient_start">#00000000</color>
+    <color name="object_detected_bg_gradient_end">#66000000</color>
+    <color name="bounding_box_gradient_start">#00FFFFFF</color>
+    <color name="bounding_box_gradient_end">@color/colorOnPrimary</color>
     <color name="reticle_ripple">#9AFFFFFF</color>
 </resources>

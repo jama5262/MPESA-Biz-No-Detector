@@ -67,9 +67,9 @@ class CameraFragment : Fragment() {
                     rootView.textViewMessage.text = getString(R.string.camera_message_2)
                 }
                 CameraFlowState.CONFIRMED -> {
-//                    stopCamera()
-//                    val bitmap = cameraViewModel.confirmedBitmap.value!!
-//                    displayConfirmedImage(bitmap)
+                    stopCamera()
+                    val bitmap = cameraViewModel.confirmedBitmap.value!!
+                    displayConfirmedImage(bitmap)
                 }
             }
         }

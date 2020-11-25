@@ -7,4 +7,7 @@
     <dimen name="object_reticle_inner_ring_stroke_radius">14dp</dimen>
     <dimen name="object_reticle_ripple_size_offset">24dp</dimen>
     <dimen name="object_reticle_ripple_stroke_width">4dp</dimen>
+    <dimen name="bounding_box_confirmed_stroke_width">2dp</dimen>
+    <dimen name="bounding_box_stroke_width">1dp</dimen>
+    <dimen name="bounding_box_corner_radius">12dp</dimen>
 </resources>

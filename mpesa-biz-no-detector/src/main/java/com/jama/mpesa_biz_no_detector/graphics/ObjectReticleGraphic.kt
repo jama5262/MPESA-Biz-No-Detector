@@ -66,7 +66,6 @@ class ObjectReticleGraphic(
         canvas.drawCircle(cx, cy, outerRingStrokeRadius.toFloat(), outerRingStrokePaint)
         canvas.drawCircle(cx, cy, innerRingStrokeRadius.toFloat(), innerRingStrokePaint)
 
-        // Draws the ripple to simulate the breathing animation effect.
         ripplePaint.alpha = (rippleAlpha * cameraReticleAnimator.rippleAlphaScale).toInt()
         ripplePaint.strokeWidth = rippleStrokeWidth * cameraReticleAnimator.rippleStrokeWidthScale
         val radius = outerRingStrokeRadius + rippleSizeOffset * cameraReticleAnimator.rippleSizeScale
