@@ -9,15 +9,13 @@ import com.jama.mpesa_biz_no_detector.fuzzySearch.SearchBizNo
 import com.jama.mpesa_biz_no_detector.models.DetectedBizNo
 import com.jama.mpesa_biz_no_detector.models.VisionResult
 import com.jama.mpesa_biz_no_detector.ui.MPESABizNoDetectorActivity
-import com.jama.mpesa_biz_no_detector.utils.Constants
 import com.jama.mpesa_biz_no_detector.utils.toByteArray
 
 class MPESABizNoDetector(
-    private val azureVisionKey: String,
-    azureVisionEndPoint: String
+    private val azureVisionEndPoint: String,
+    private val azureVisionKey: String
 ) {
 
-    private val baseUrl = "$azureVisionEndPoint${Constants.READ_API_ENDPOINT}"
     private val activityClass = MPESABizNoDetectorActivity::class.java
 
     fun start(activity: Activity, requestCode: Int) {
@@ -39,7 +37,11 @@ class MPESABizNoDetector(
 
     private suspend fun getVisionResult(bitmap: Bitmap): VisionResult {
         val byteArray = bitmap.toByteArray()
-        val azureVisionRest = AzureVisionRest(baseUrl, azureVisionKey, byteArray)
+        val azureVisionRest = AzureVisionRest(
+            azureVisionEndPoint,
+            azureVisionKey,
+            byteArray
+        )
         return azureVisionRest.startVision() ?: throw Exception("Vision result not found")
     }
 

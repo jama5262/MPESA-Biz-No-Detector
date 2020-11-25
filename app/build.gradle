@@ -14,7 +14,7 @@ android {
 
     defaultConfig {
         applicationId "com.jama.mpesa_biz_no_detector_example"
-        minSdkVersion 16
+        minSdkVersion 21
         targetSdkVersion 30
         versionCode 1
         versionName "1.0"
@@ -50,7 +50,6 @@ dependencies {
     implementation "androidx.navigation:navigation-fragment-ktx:2.3.1"
     implementation "androidx.navigation:navigation-ui-ktx:2.3.1"
 
-    implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.2.0'
     implementation project(path: ':mpesa-biz-no-detector')
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
 

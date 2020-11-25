@@ -7,13 +7,15 @@ import okhttp3.RequestBody
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
-import java.lang.Exception
 
 class AzureVisionRest(
-    baseUrl: String,
+    azureVisionEndPoint: String,
     private val azureVisionKey: String,
     private val byteArray: ByteArray
 ) {
+
+    private val baseUrl = "$azureVisionEndPoint${Constants.READ_API_ENDPOINT}"
+
     private val retrofit: Retrofit = Retrofit.Builder()
         .baseUrl(baseUrl)
         .addConverterFactory(MoshiConverterFactory.create())
@@ -24,7 +26,8 @@ class AzureVisionRest(
     suspend fun startVision(): VisionResult? {
         val analyzedResponse = analyze()
         val headers = analyzedResponse.headers()
-        val requestId = headers.get("apim-request-id") ?: throw Exception("Request ID not found")
+        val requestId =
+            headers.get("apim-request-id") ?: throw Exception("Request ID not found")
 
         var pool = true
         var visionResult: VisionResult? = null

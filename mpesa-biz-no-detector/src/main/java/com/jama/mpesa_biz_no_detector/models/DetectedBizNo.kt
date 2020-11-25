@@ -1,6 +1,6 @@
 package com.jama.mpesa_biz_no_detector.models
 
-import com.jama.mpesa_biz_no_detector.BizNoType
+import com.jama.mpesa_biz_no_detector.enums.BizNoType
 
 data class DetectedBizNo(
     val type: BizNoType,

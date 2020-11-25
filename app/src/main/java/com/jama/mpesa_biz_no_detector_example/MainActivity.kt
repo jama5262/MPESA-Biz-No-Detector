@@ -20,8 +20,8 @@ import java.lang.Exception
 class MainActivity : AppCompatActivity() {
 
     private val mpesaBizNoDetector = MPESABizNoDetector(
-        Constants.AZURE_VISION_KEY,
-        Constants.AZURE_VISION_ENDPOINT
+        Constants.AZURE_VISION_ENDPOINT,
+        Constants.AZURE_VISION_KEY
     )
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -33,6 +33,7 @@ class MainActivity : AppCompatActivity() {
                 try {
                     val bitmap = getBitmap() ?: throw Exception("Bitmap Not found")
                     mpesaBizNoDetector.start(this@MainActivity, 1)
+//                    mpesaBizNoDetector.detect(bitmap)
                 } catch (e: Exception) {
                     Log.e("jjj", "Error found -> ${e.message}")
                 }
