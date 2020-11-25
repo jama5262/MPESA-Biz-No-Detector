@@ -2,6 +2,7 @@ package com.jama.mpesa_biz_no_detector.ui.fragments
 
 import android.app.Application
 import android.graphics.Bitmap
+import android.graphics.RectF
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import com.jama.mpesa_biz_no_detector.R

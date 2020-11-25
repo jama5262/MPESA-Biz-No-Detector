@@ -31,8 +31,9 @@ class GraphicsOverlayController(
         } else {
             if (objectBoxOverlapsConfirmationReticle(detectionResult.second)) {
                 // User is confirming the object selection.
+                val a = translateRect(detectionResult.second)
                 graphicOverlay.add(
-                    ObjectDetectedGraphic(translateRect(detectionResult.second))
+                    ObjectDetectedGraphic(a)
                 )
                 cameraViewModel.confirmingObject(
                     detectionResult.first,
@@ -70,9 +71,9 @@ class GraphicsOverlayController(
     }
 
     private fun translateRect(rect: Rect) = RectF(
-        translateX(rect.left.toFloat()),
+        translateX(rect.left.toFloat() - 20f),
         translateY(rect.top.toFloat()),
-        translateX(rect.right.toFloat()),
+        translateX(rect.right.toFloat() + 20f),
         translateY(rect.bottom.toFloat())
     )
 
