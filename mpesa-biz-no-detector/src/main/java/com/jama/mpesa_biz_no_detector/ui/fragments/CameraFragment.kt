@@ -1,6 +1,7 @@
 package com.jama.mpesa_biz_no_detector.ui.fragments
 
 import android.graphics.Bitmap
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -91,6 +92,15 @@ class CameraFragment : Fragment() {
             this.layoutParams = layoutParams
             layoutParams.height = bitmap.height.toDp()
             layoutParams.width = bitmap.width.toDp()
+            val shape = ContextCompat.getDrawable(requireContext(), R.drawable.image_view_shape)
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                foreground = shape
+            } else {
+                background = shape
+            }
+            setPadding(10, 10, 10, 10)
+            cropToPadding = true
+            scaleType = ImageView.ScaleType.CENTER_CROP
             setImageBitmap(bitmap)
         }
         AndroidAnimation().apply {
@@ -131,17 +141,13 @@ class CameraFragment : Fragment() {
                     )
                 }
 
-            try {
-                cameraProvider.unbindAll()
-                cameraProvider.bindToLifecycle(
-                    this,
-                    CameraSelector.DEFAULT_BACK_CAMERA,
-                    preview,
-                    imageAnalyzer
-                )
-            } catch (exc: Exception) {
-                Log.e("jjj", "Use case binding failed", exc)
-            }
+            cameraProvider.unbindAll()
+            cameraProvider.bindToLifecycle(
+                this,
+                CameraSelector.DEFAULT_BACK_CAMERA,
+                preview,
+                imageAnalyzer
+            )
 
         }, ContextCompat.getMainExecutor(requireContext()))
     }
