@@ -3,14 +3,22 @@ package com.jama.mpesa_biz_no_detector.ui.fragments
 import android.graphics.Bitmap
 import android.os.Build
 import android.os.Bundle
-import androidx.fragment.app.Fragment
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
+import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
 import androidx.transition.TransitionInflater
 import com.jama.mpesa_biz_no_detector.R
+import com.jama.mpesa_biz_no_detector.models.DetectedBizNo
+import com.jama.mpesa_biz_no_detector.ui.MPESABizNoDetectorActivity
 import kotlinx.android.synthetic.main.fragment_results.view.*
+import kotlinx.android.synthetic.main.sucess.view.*
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class ResultsFragment : Fragment() {
 
@@ -33,8 +41,10 @@ class ResultsFragment : Fragment() {
     }
 
     private fun initialize() {
+        val bitmap = requireArguments().getParcelable<Bitmap>(BITMAP)!!
         setUpSharedAnimation()
-        setUpImageView()
+        setUpImageView(bitmap)
+        detect(bitmap)
     }
 
     private fun setUpSharedAnimation() {
@@ -45,7 +55,7 @@ class ResultsFragment : Fragment() {
             }
     }
 
-    private fun setUpImageView() {
+    private fun setUpImageView(bitmap: Bitmap) {
         rootView.apply {
             imageViewDetected.apply {
                 val shape = ContextCompat.getDrawable(requireContext(), R.drawable.image_view_shape)
@@ -54,10 +64,44 @@ class ResultsFragment : Fragment() {
                 } else {
                     background = shape
                 }
-                val bitmap = requireArguments().getParcelable<Bitmap>(BITMAP)
                 setImageBitmap(bitmap)
                 transitionName = TRANSITION_NAME
             }
         }
+    }
+
+    private fun detect(bitmap: Bitmap) {
+        lifecycleScope.launch {
+            try {
+                showProgress(true)
+                val mpesaBizNoDetector =
+                    (requireActivity() as MPESABizNoDetectorActivity).mpesaBizNoDetector
+                val detectedBizNo = mpesaBizNoDetector.detect(bitmap)
+                success(detectedBizNo)
+            } catch (e: Exception) {
+                fail()
+            } finally {
+                showProgress(false)
+            }
+        }
+    }
+
+    private fun success(detectedBizNo: DetectedBizNo) {
+        rootView.includeSuccess.visibility = View.VISIBLE
+        rootView.includeFail.visibility = View.GONE
+        val businessNo = detectedBizNo.businessNo.toString()
+        val accountNo = detectedBizNo.accountNo ?: ""
+        rootView.textFieldBusinessNo.editText!!.setText(businessNo)
+        rootView.textFieldAccountNo.editText!!.setText(accountNo)
+    }
+
+    private fun fail() {
+        rootView.includeFail.visibility = View.VISIBLE
+        rootView.includeSuccess.visibility = View.GONE
+    }
+
+    private fun showProgress(show: Boolean) {
+        val progressBar = rootView.progressBar
+        progressBar.visibility = if (show) View.VISIBLE else View.GONE
     }
 }

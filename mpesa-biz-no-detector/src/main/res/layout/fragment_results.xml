@@ -62,7 +62,8 @@
         android:visibility="gone"
         app:layout_constraintEnd_toStartOf="@+id/guideline4"
         app:layout_constraintStart_toStartOf="@+id/guideline3"
-        app:layout_constraintTop_toBottomOf="@+id/imageViewDetected" />
+        app:layout_constraintTop_toBottomOf="@+id/imageViewDetected"
+        tools:visibility="visible" />
 
     <include
         android:id="@+id/includeFail"
