@@ -8,7 +8,7 @@
         android:id="@+id/textViewFail"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="Oops, we couldn't detect an MPESA business no, please try again"
+        android:text="@string/fail"
         android:textAppearance="@style/TextAppearance.AppCompat.Display2"
         android:textColor="@color/colorError"
         app:layout_constraintEnd_toEndOf="parent"

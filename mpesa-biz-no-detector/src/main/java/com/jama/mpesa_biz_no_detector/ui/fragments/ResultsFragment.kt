@@ -3,22 +3,24 @@ package com.jama.mpesa_biz_no_detector.ui.fragments
 import android.graphics.Bitmap
 import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.observe
+import androidx.navigation.fragment.findNavController
 import androidx.transition.TransitionInflater
 import com.jama.mpesa_biz_no_detector.R
+import com.jama.mpesa_biz_no_detector.states.BizNoType
+import com.jama.mpesa_biz_no_detector.states.ResultsState
 import com.jama.mpesa_biz_no_detector.models.DetectedBizNo
 import com.jama.mpesa_biz_no_detector.ui.MPESABizNoDetectorActivity
 import kotlinx.android.synthetic.main.fragment_results.view.*
 import kotlinx.android.synthetic.main.sucess.view.*
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 
 class ResultsFragment : Fragment() {
 
@@ -31,6 +33,8 @@ class ResultsFragment : Fragment() {
 
     private lateinit var rootView: View
 
+    private val resultsViewModel: ResultsViewModel by viewModels()
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -41,9 +45,11 @@ class ResultsFragment : Fragment() {
     }
 
     private fun initialize() {
+        setUpObservers()
         val bitmap = requireArguments().getParcelable<Bitmap>(BITMAP)!!
         setUpSharedAnimation()
         setUpImageView(bitmap)
+        setUpButtons()
         detect(bitmap)
     }
 
@@ -70,18 +76,57 @@ class ResultsFragment : Fragment() {
         }
     }
 
+    private fun setUpButtons() {
+        rootView.buttonProceed.setOnClickListener {
+
+        }
+
+        rootView.buttonRetry.setOnClickListener {
+            findNavController().navigateUp()
+        }
+    }
+
+    private fun setUpObservers() {
+        resultsViewModel.showProgress.observe(viewLifecycleOwner) {
+            val progressBar = rootView.progressBar
+            val buttonProceed = rootView.buttonProceed
+            val buttonRetry = rootView.buttonRetry
+            when (it) {
+                true -> {
+                    progressBar.visibility = View.VISIBLE
+                    buttonProceed.visibility = View.GONE
+                    buttonRetry.visibility = View.GONE
+                }
+                false -> {
+                    progressBar.visibility = View.GONE
+                    buttonProceed.visibility = View.VISIBLE
+                    buttonRetry.visibility = View.VISIBLE
+                }
+            }
+        }
+
+        resultsViewModel.resultState.observe(viewLifecycleOwner) {
+            when (it) {
+                is ResultsState.Success -> {
+                    success(it.detectedBizNo)
+                }
+                is ResultsState.Fail -> fail()
+            }
+        }
+    }
+
     private fun detect(bitmap: Bitmap) {
         lifecycleScope.launch {
             try {
-                showProgress(true)
+                resultsViewModel.showProgress(true)
                 val mpesaBizNoDetector =
                     (requireActivity() as MPESABizNoDetectorActivity).mpesaBizNoDetector
                 val detectedBizNo = mpesaBizNoDetector.detect(bitmap)
-                success(detectedBizNo)
+                resultsViewModel.setResultState(ResultsState.Success(detectedBizNo))
             } catch (e: Exception) {
-                fail()
+                resultsViewModel.setResultState(ResultsState.Fail)
             } finally {
-                showProgress(false)
+                resultsViewModel.showProgress(false)
             }
         }
     }
@@ -90,9 +135,25 @@ class ResultsFragment : Fragment() {
         rootView.includeSuccess.visibility = View.VISIBLE
         rootView.includeFail.visibility = View.GONE
         val businessNo = detectedBizNo.businessNo.toString()
-        val accountNo = detectedBizNo.accountNo ?: ""
-        rootView.textFieldBusinessNo.editText!!.setText(businessNo)
-        rootView.textFieldAccountNo.editText!!.setText(accountNo)
+        rootView.includeSuccess.textFieldBusinessNo.editText!!.setText(businessNo)
+        when (detectedBizNo.type) {
+            BizNoType.PAYBILL_NUMBER -> {
+                rootView.includeSuccess.apply {
+                    textViewType.text = getString(R.string.paybill)
+                    textFieldAccountNo.apply {
+                        val accountNo = detectedBizNo.accountNo ?: ""
+                        visibility = View.VISIBLE
+                        editText!!.setText(accountNo)
+                    }
+                }
+            }
+            BizNoType.TILL_NUMBER -> {
+                rootView.includeSuccess.apply {
+                    textViewType.text = getString(R.string.buy_goods_and_services)
+                    textFieldAccountNo.visibility = View.GONE
+                }
+            }
+        }
     }
 
     private fun fail() {
@@ -101,7 +162,6 @@ class ResultsFragment : Fragment() {
     }
 
     private fun showProgress(show: Boolean) {
-        val progressBar = rootView.progressBar
-        progressBar.visibility = if (show) View.VISIBLE else View.GONE
+
     }
 }

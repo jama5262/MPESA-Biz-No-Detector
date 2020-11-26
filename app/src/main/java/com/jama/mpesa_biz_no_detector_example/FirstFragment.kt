@@ -35,7 +35,7 @@ class FirstFragment : Fragment() {
     ): View? {
         rootView = inflater.inflate(R.layout.fragment_first, container, false)
 
-        rootView.button2.setOnClickListener {
+        rootView.buttonProceed.setOnClickListener {
             lifecycleScope.launch(Dispatchers.IO) {
                 try {
                     val bitmap = getBitmap() ?: throw Exception("Bitmap Not found")
