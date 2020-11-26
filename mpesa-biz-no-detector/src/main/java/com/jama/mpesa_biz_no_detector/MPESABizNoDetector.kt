@@ -20,21 +20,19 @@ class MPESABizNoDetector(
     private val azureVisionKey: String
 ) : Serializable {
 
-    private val activityClass = MPESABizNoDetectorActivity::class.java
-
     fun start(activity: Activity, requestCode: Int) {
-        val intent = Intent(activity, activityClass)
+        val intent = Intent(activity, ACTIVITY_CLASS)
         val bundle = bundleOf(
-            "MPESABizNoDetector" to this
+            CLASS_KEY to this
         )
         intent.putExtras(bundle)
         activity.startActivityForResult(intent, requestCode)
     }
 
     fun start(fragment: Fragment, requestCode: Int) {
-        val intent = Intent(fragment.context, activityClass)
+        val intent = Intent(fragment.context, ACTIVITY_CLASS)
         val bundle = bundleOf(
-            "MPESABizNoDetector" to this
+            CLASS_KEY to this
         )
         intent.putExtras(bundle)
         fragment.startActivityForResult(intent, requestCode)
@@ -62,6 +60,9 @@ class MPESABizNoDetector(
     }
 
     companion object {
+        private const val CLASS_KEY = "MPESABizNoDetector"
+        private val ACTIVITY_CLASS = MPESABizNoDetectorActivity::class.java
+
         fun getActivityResult(data: Intent): DetectedBizNo {
             return data.getSerializableExtra("detectedBizNo") as DetectedBizNo
         }

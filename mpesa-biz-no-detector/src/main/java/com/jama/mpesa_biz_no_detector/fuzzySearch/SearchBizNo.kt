@@ -8,8 +8,6 @@ import me.xdrop.fuzzywuzzy.FuzzySearch
 
 class SearchBizNo(private val choices: List<String>) {
 
-    private companion object
-
     fun search(): DetectedBizNo? {
         var type = BizNoType.TILL_NUMBER
         var businessNoMatchedIndex = findMatchedIndex(Constants.TILL_NO_QUERIES)

@@ -5,6 +5,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.os.bundleOf
 import com.jama.mpesa_biz_no_detector.MPESABizNoDetector
 import com.jama.mpesa_biz_no_detector.R
 import com.jama.mpesa_biz_no_detector.models.DetectedBizNo
@@ -21,7 +22,8 @@ class MPESABizNoDetectorActivity : AppCompatActivity() {
 
     fun sendResults(detectedBizNo: DetectedBizNo) {
         val intent = Intent()
-        intent.putExtra("detectedBizNo", detectedBizNo)
+        val bundle = bundleOf("detectedBizNo" to detectedBizNo)
+        intent.putExtras(bundle)
         setResult(Activity.RESULT_OK, intent)
         finish()
     }

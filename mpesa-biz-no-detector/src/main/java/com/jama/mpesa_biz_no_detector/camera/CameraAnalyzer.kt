@@ -16,7 +16,8 @@ import kotlinx.coroutines.launch
 class CameraAnalyzer(
     cameraViewModel: CameraViewModel,
     private val scope: CoroutineScope,
-    graphicOverlay: GraphicOverlay
+    graphicOverlay: GraphicOverlay,
+    private val catchErrorAction: () -> Unit
 ) : ImageAnalysis.Analyzer {
 
     private val objectDetection = ObjectDetection()
@@ -33,10 +34,8 @@ class CameraAnalyzer(
                     val bitmap = mediaImage.toBitmap()
                     val detectionResult = objectDetection.detect(bitmap, rotation)
                     graphicsOverlayController.start(detectionResult, getImageDimension(imageProxy))
-                } catch (e: ObjectDetectionException) {
-                    Log.e("jjj", "Object detection error -> ${e.message}")
                 } catch (e: Exception) {
-                    Log.e("jjj", "Error found -> ${e.message}")
+                    catchErrorAction()
                 } finally {
                     imageProxy.close()
                 }

@@ -4,7 +4,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.jama.mpesa_biz_no_detector.states.ResultsState
 
-class ResultsViewModel: ViewModel() {
+class ResultsViewModel : ViewModel() {
 
     private val _showProgress = MutableLiveData(false)
     val showProgress = _showProgress

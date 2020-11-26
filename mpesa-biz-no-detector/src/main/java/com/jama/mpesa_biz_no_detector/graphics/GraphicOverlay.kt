@@ -1,12 +1,13 @@
 package com.jama.mpesa_biz_no_detector.graphics
 
 import android.content.Context
-import android.graphics.*
+import android.graphics.Canvas
+import android.graphics.Color
+import android.graphics.Paint
 import android.util.AttributeSet
-import android.util.Log
 import android.view.View
 
-class GraphicOverlay: View {
+class GraphicOverlay : View {
 
     constructor(context: Context) : super(context)
     constructor(context: Context, attr: AttributeSet? = null) : super(context, attr)
@@ -17,18 +18,6 @@ class GraphicOverlay: View {
     ) : super(context, attrs, defStyleAttr)
 
     private val graphics = mutableListOf<Graphic>()
-    private val paint = Paint()
-
-    private var scaleFactorX = 1.0f
-    private var scaleFactorY = 1.0f
-
-    init {
-        paint.apply {
-            style = Paint.Style.STROKE
-            strokeWidth = 20f
-            color = Color.RED
-        }
-    }
 
     fun add(graphic: Graphic) {
         graphics.add(graphic)

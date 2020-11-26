@@ -15,6 +15,7 @@ class ObjectConfirmationController {
             override fun onFinish() {
                 progress = 1f
             }
+
             override fun onTick(millisUntilFinished: Long) {
                 progress = (confirmationTimeMs - millisUntilFinished).toFloat() / confirmationTimeMs
             }

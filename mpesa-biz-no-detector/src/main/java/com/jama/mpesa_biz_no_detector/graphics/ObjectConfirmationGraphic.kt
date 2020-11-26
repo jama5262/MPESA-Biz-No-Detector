@@ -79,9 +79,9 @@ class ObjectConfirmationGraphic(
         val sweepAngle = confirmationController.progress * 360
         canvas.drawArc(
             progressRect,
-            /* startAngle= */ 0f,
+            0f,
             sweepAngle,
-            /* useCenter= */ false,
+            false,
             progressRingStrokePaint
         )
     }

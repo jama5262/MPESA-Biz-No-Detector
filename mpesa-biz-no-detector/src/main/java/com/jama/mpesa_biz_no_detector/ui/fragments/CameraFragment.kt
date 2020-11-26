@@ -24,6 +24,7 @@ import androidx.navigation.fragment.FragmentNavigatorExtras
 import androidx.navigation.fragment.findNavController
 import com.example.android_animation.AndroidAnimation
 import com.example.android_animation.enums.Easing
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.common.util.concurrent.ListenableFuture
 import com.jama.mpesa_biz_no_detector.R
 import com.jama.mpesa_biz_no_detector.camera.CameraAnalyzer
@@ -37,6 +38,7 @@ class CameraFragment : Fragment() {
 
     private companion object {
         const val TRANSITION_NAME = "imageViewDetected"
+        const val BITMAP = "bitmap"
     }
 
     private lateinit var rootView: View
@@ -144,7 +146,9 @@ class CameraFragment : Fragment() {
                 .also {
                     it.setAnalyzer(
                         cameraExecutor,
-                        CameraAnalyzer(cameraViewModel, lifecycleScope, rootView.graphOverlay)
+                        CameraAnalyzer(cameraViewModel, lifecycleScope, rootView.graphOverlay) {
+                            cameraError()
+                        }
                     )
                 }
 
@@ -163,9 +167,20 @@ class CameraFragment : Fragment() {
         cameraProviderFuture.get().unbindAll()
     }
 
+    private fun cameraError() {
+        stopCamera()
+        MaterialAlertDialogBuilder(requireContext())
+            .setTitle(getString(R.string.camera_error))
+            .setMessage(getString(R.string.camera_error_description))
+            .setNegativeButton(getString(R.string.cancel)) { _, _ ->
+                findNavController().navigateUp()
+            }
+            .show()
+    }
+
     private fun navigateToResult(imageView: ImageView, bitmap: Bitmap) {
         val bundle = bundleOf(
-            "bitmap" to bitmap
+            BITMAP to bitmap
         )
 
         val extras = FragmentNavigatorExtras(
@@ -174,8 +189,8 @@ class CameraFragment : Fragment() {
 
         findNavController().navigateToFragment(
             R.id.action_cameraFragment_to_resultsFragment,
-            bundle = bundle,
-            extras = extras
+            bundle,
+            extras
         )
     }
 

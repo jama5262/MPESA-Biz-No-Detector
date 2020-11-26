@@ -120,9 +120,7 @@ class ResultsFragment : Fragment() {
 
         resultsViewModel.resultState.observe(viewLifecycleOwner) {
             when (it) {
-                is ResultsState.Success -> {
-                    success(it.detectedBizNo)
-                }
+                is ResultsState.Success -> success(it.detectedBizNo)
                 is ResultsState.Fail -> fail()
             }
         }

@@ -8,4 +8,7 @@
     <string name="paybill">Paybill</string>
     <string name="business_no">Business Number</string>
     <string name="account_no">Account Number</string>
+    <string name="camera_error">Camera Error</string>
+    <string name="camera_error_description">Unknown error occured, please try again</string>
+    <string name="cancel">Cancel</string>
 </resources>
