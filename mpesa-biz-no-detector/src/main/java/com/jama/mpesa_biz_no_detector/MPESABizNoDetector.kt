@@ -12,6 +12,7 @@ import com.jama.mpesa_biz_no_detector.models.VisionResult
 import com.jama.mpesa_biz_no_detector.ui.MPESABizNoDetectorActivity
 import com.jama.mpesa_biz_no_detector.utils.toByteArray
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.withContext
 import java.io.Serializable
 

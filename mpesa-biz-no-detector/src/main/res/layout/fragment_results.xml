@@ -62,8 +62,8 @@
         layout="@layout/sucess"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
         android:visibility="gone"
+        app:layout_constraintBottom_toTopOf="@+id/buttonRetry"
         app:layout_constraintEnd_toStartOf="@+id/guideline4"
         app:layout_constraintStart_toStartOf="@+id/guideline3"
         app:layout_constraintTop_toBottomOf="@+id/imageViewDetected"
@@ -74,11 +74,12 @@
         layout="@layout/fail"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
         android:visibility="gone"
+        app:layout_constraintBottom_toTopOf="@+id/buttonRetry"
         app:layout_constraintEnd_toStartOf="@+id/guideline4"
         app:layout_constraintStart_toStartOf="@+id/guideline3"
-        app:layout_constraintTop_toBottomOf="@+id/includeSuccess" />
+        app:layout_constraintTop_toBottomOf="@+id/imageViewDetected"
+        tools:visibility="gone" />
 
     <ProgressBar
         android:id="@+id/progressBar"

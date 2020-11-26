@@ -11,4 +11,6 @@
     <string name="camera_error">Camera Error</string>
     <string name="camera_error_description">Unknown error occured, please try again</string>
     <string name="cancel">Cancel</string>
+    <string name="please_add_a_biz_no">Please add a business no</string>
+    <string name="please_add_an_acc_no">Please add an account no</string>
 </resources>

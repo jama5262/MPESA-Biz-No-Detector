@@ -14,6 +14,8 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.observe
 import androidx.navigation.fragment.findNavController
 import androidx.transition.TransitionInflater
+import com.example.android_animation.AndroidAnimation
+import com.example.android_animation.enums.Easing
 import com.jama.mpesa_biz_no_detector.R
 import com.jama.mpesa_biz_no_detector.models.DetectedBizNo
 import com.jama.mpesa_biz_no_detector.states.BizNoType
@@ -169,12 +171,24 @@ class ResultsFragment : Fragment() {
                 }
             }
         }
+        animate(rootView.includeSuccess)
     }
 
     private fun fail() {
         rootView.includeFail.visibility = View.VISIBLE
         rootView.includeSuccess.visibility = View.GONE
         rootView.buttonRetry.visibility = View.VISIBLE
+        animate(rootView.includeFail)
+    }
+
+    private fun animate(targetView: View) {
+        AndroidAnimation().apply {
+            duration = 1500
+            easing = Easing.EXP_OUT
+            targetViews(targetView)
+            translateX(rootView.width.toFloat(), 0f)
+            start()
+        }
     }
 
     private fun areTextFieldsEmpty(type: BizNoType): Boolean {
@@ -183,12 +197,12 @@ class ResultsFragment : Fragment() {
 
         if (businessNo.isBlank()) {
             isBusinessNoEmpty = true
-            rootView.textFieldBusinessNo.error = "Please add a business no"
+            rootView.textFieldBusinessNo.error = getString(R.string.please_add_a_biz_no)
         }
 
         if (accountNo.isBlank() && type == BizNoType.PAYBILL_NUMBER) {
             isAccountNoEmpty = true
-            rootView.textFieldAccountNo.error = "Please add an account no"
+            rootView.textFieldAccountNo.error = getString(R.string.please_add_an_acc_no)
         }
 
         return isBusinessNoEmpty || isAccountNoEmpty
