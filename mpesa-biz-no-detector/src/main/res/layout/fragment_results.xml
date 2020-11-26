@@ -40,7 +40,7 @@
         app:layout_constraintTop_toTopOf="@+id/button" />
 
     <ImageView
-        android:id="@+id/imageView"
+        android:id="@+id/imageViewDetected"
         android:layout_width="wrap_content"
         android:layout_height="150dp"
         android:layout_marginTop="24dp"
@@ -54,7 +54,7 @@
         tools:src="@tools:sample/avatars" />
 
     <include
-        android:id="@+id/include"
+        android:id="@+id/includeSuccess"
         layout="@layout/sucess"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -62,14 +62,27 @@
         android:visibility="gone"
         app:layout_constraintEnd_toStartOf="@+id/guideline4"
         app:layout_constraintStart_toStartOf="@+id/guideline3"
-        app:layout_constraintTop_toBottomOf="@+id/imageView" />
+        app:layout_constraintTop_toBottomOf="@+id/imageViewDetected" />
 
     <include
+        android:id="@+id/includeFail"
         layout="@layout/fail"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
+        android:visibility="gone"
         app:layout_constraintEnd_toStartOf="@+id/guideline4"
         app:layout_constraintStart_toStartOf="@+id/guideline3"
-        app:layout_constraintTop_toBottomOf="@+id/include" />
+        app:layout_constraintTop_toBottomOf="@+id/includeSuccess" />
+
+    <ProgressBar
+        android:id="@+id/progressBar"
+        style="?android:attr/progressBarStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:indeterminate="true"
+        app:layout_constraintBottom_toBottomOf="@+id/imageViewDetected"
+        app:layout_constraintEnd_toEndOf="@+id/imageViewDetected"
+        app:layout_constraintStart_toStartOf="@+id/imageViewDetected"
+        app:layout_constraintTop_toTopOf="@+id/imageViewDetected" />
 </androidx.constraintlayout.widget.ConstraintLayout>

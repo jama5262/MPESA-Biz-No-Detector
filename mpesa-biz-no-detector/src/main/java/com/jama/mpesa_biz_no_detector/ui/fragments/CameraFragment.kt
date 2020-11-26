@@ -16,10 +16,12 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.constraintlayout.widget.ConstraintSet
 import androidx.core.content.ContextCompat
 import androidx.core.os.bundleOf
+import androidx.core.view.doOnPreDraw
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.observe
+import androidx.navigation.fragment.FragmentNavigatorExtras
 import androidx.navigation.fragment.findNavController
 import com.example.android_animation.AndroidAnimation
 import com.example.android_animation.enums.Easing
@@ -33,6 +35,10 @@ import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 
 class CameraFragment : Fragment() {
+
+    private companion object {
+        const val TRANSITION_NAME = "imageViewDetected"
+    }
 
     private lateinit var rootView: View
 
@@ -55,7 +61,8 @@ class CameraFragment : Fragment() {
         cameraExecutor = Executors.newSingleThreadExecutor()
         setUpObservers()
         startCamera()
-        lifecycleScope
+        postponeEnterTransition()
+        view.doOnPreDraw { startPostponedEnterTransition() }
     }
 
     private fun setUpObservers() {
@@ -101,6 +108,7 @@ class CameraFragment : Fragment() {
             setPadding(10, 10, 10, 10)
             cropToPadding = true
             scaleType = ImageView.ScaleType.CENTER_CROP
+            transitionName = TRANSITION_NAME
             setImageBitmap(bitmap)
         }
         AndroidAnimation().apply {
@@ -113,7 +121,7 @@ class CameraFragment : Fragment() {
                 rootView.cameraLayout.addView(imageView)
             }
             onAnimationEnd {
-                navigateToResult(bitmap)
+                navigateToResult(imageView, bitmap)
             }
             start()
         }
@@ -156,14 +164,19 @@ class CameraFragment : Fragment() {
         cameraProviderFuture.get().unbindAll()
     }
 
-    private fun navigateToResult(bitmap: Bitmap) {
+    private fun navigateToResult(imageView: ImageView, bitmap: Bitmap) {
         val bundle = bundleOf(
             "bitmap" to bitmap
         )
 
+        val extras = FragmentNavigatorExtras(
+            imageView to TRANSITION_NAME
+        )
+
         findNavController().navigateToFragment(
             R.id.action_cameraFragment_to_resultsFragment,
-            bundle = bundle
+            bundle = bundle,
+            extras = extras
         )
     }
 

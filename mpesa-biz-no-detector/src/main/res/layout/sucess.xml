@@ -5,7 +5,7 @@
     android:layout_height="wrap_content">
 
     <TextView
-        android:id="@+id/textView"
+        android:id="@+id/textViewType"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:text="Buy Goods and Services"
@@ -23,7 +23,7 @@
         android:hint="Business No"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView">
+        app:layout_constraintTop_toBottomOf="@+id/textViewType">
 
         <com.google.android.material.textfield.TextInputEditText
             android:layout_width="match_parent"
