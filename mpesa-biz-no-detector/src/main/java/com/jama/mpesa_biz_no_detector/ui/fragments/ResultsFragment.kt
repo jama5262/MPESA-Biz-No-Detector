@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
+import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
@@ -14,9 +15,9 @@ import androidx.lifecycle.observe
 import androidx.navigation.fragment.findNavController
 import androidx.transition.TransitionInflater
 import com.jama.mpesa_biz_no_detector.R
+import com.jama.mpesa_biz_no_detector.models.DetectedBizNo
 import com.jama.mpesa_biz_no_detector.states.BizNoType
 import com.jama.mpesa_biz_no_detector.states.ResultsState
-import com.jama.mpesa_biz_no_detector.models.DetectedBizNo
 import com.jama.mpesa_biz_no_detector.ui.MPESABizNoDetectorActivity
 import kotlinx.android.synthetic.main.fragment_results.view.*
 import kotlinx.android.synthetic.main.sucess.view.*
@@ -35,6 +36,9 @@ class ResultsFragment : Fragment() {
 
     private val resultsViewModel: ResultsViewModel by viewModels()
 
+    private var businessNo = ""
+    private var accountNo = ""
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -49,7 +53,7 @@ class ResultsFragment : Fragment() {
         val bitmap = requireArguments().getParcelable<Bitmap>(BITMAP)!!
         setUpSharedAnimation()
         setUpImageView(bitmap)
-        setUpButtons()
+        setUpViews()
         detect(bitmap)
     }
 
@@ -76,33 +80,42 @@ class ResultsFragment : Fragment() {
         }
     }
 
-    private fun setUpButtons() {
+    private fun setUpViews() {
         rootView.buttonProceed.setOnClickListener {
-
+            val activity = (requireActivity() as MPESABizNoDetectorActivity)
+            when (val resultsState = resultsViewModel.resultState.value!!) {
+                is ResultsState.Success -> {
+                    val type = resultsState.detectedBizNo.type
+                    if (areTextFieldsEmpty(type)) return@setOnClickListener
+                    val detectedBizNo = DetectedBizNo(
+                        type,
+                        businessNo.toInt(),
+                        if (accountNo.isNotBlank()) accountNo else null
+                    )
+                    activity.sendResults(detectedBizNo)
+                }
+            }
         }
 
         rootView.buttonRetry.setOnClickListener {
             findNavController().navigateUp()
+        }
+
+        rootView.textFieldBusinessNo.editText!!.doOnTextChanged { text, _, _, _ ->
+            rootView.textFieldBusinessNo.error = ""
+            businessNo = text.toString()
+        }
+
+        rootView.textFieldAccountNo.editText!!.doOnTextChanged { text, _, _, _ ->
+            rootView.textFieldAccountNo.error = ""
+            accountNo = text.toString()
         }
     }
 
     private fun setUpObservers() {
         resultsViewModel.showProgress.observe(viewLifecycleOwner) {
             val progressBar = rootView.progressBar
-            val buttonProceed = rootView.buttonProceed
-            val buttonRetry = rootView.buttonRetry
-            when (it) {
-                true -> {
-                    progressBar.visibility = View.VISIBLE
-                    buttonProceed.visibility = View.GONE
-                    buttonRetry.visibility = View.GONE
-                }
-                false -> {
-                    progressBar.visibility = View.GONE
-                    buttonProceed.visibility = View.VISIBLE
-                    buttonRetry.visibility = View.VISIBLE
-                }
-            }
+            progressBar.visibility = if (it) View.VISIBLE else View.GONE
         }
 
         resultsViewModel.resultState.observe(viewLifecycleOwner) {
@@ -134,21 +147,25 @@ class ResultsFragment : Fragment() {
     private fun success(detectedBizNo: DetectedBizNo) {
         rootView.includeSuccess.visibility = View.VISIBLE
         rootView.includeFail.visibility = View.GONE
+        rootView.buttonProceed.visibility = View.VISIBLE
+        rootView.buttonRetry.visibility = View.VISIBLE
         val businessNo = detectedBizNo.businessNo.toString()
-        rootView.includeSuccess.textFieldBusinessNo.editText!!.setText(businessNo)
+        rootView.textFieldBusinessNo.editText!!.setText(businessNo)
+        this.businessNo = businessNo
         when (detectedBizNo.type) {
             BizNoType.PAYBILL_NUMBER -> {
-                rootView.includeSuccess.apply {
+                rootView.apply {
                     textViewType.text = getString(R.string.paybill)
                     textFieldAccountNo.apply {
                         val accountNo = detectedBizNo.accountNo ?: ""
                         visibility = View.VISIBLE
                         editText!!.setText(accountNo)
+                        this@ResultsFragment.accountNo = accountNo
                     }
                 }
             }
             BizNoType.TILL_NUMBER -> {
-                rootView.includeSuccess.apply {
+                rootView.apply {
                     textViewType.text = getString(R.string.buy_goods_and_services)
                     textFieldAccountNo.visibility = View.GONE
                 }
@@ -159,9 +176,23 @@ class ResultsFragment : Fragment() {
     private fun fail() {
         rootView.includeFail.visibility = View.VISIBLE
         rootView.includeSuccess.visibility = View.GONE
+        rootView.buttonRetry.visibility = View.VISIBLE
     }
 
-    private fun showProgress(show: Boolean) {
+    private fun areTextFieldsEmpty(type: BizNoType): Boolean {
+        var isBusinessNoEmpty = false
+        var isAccountNoEmpty = false
 
+        if (businessNo.isBlank()) {
+            isBusinessNoEmpty = true
+            rootView.textFieldBusinessNo.error = "Please add a business no"
+        }
+
+        if (accountNo.isBlank() && type == BizNoType.PAYBILL_NUMBER) {
+            isAccountNoEmpty = true
+            rootView.textFieldAccountNo.error = "Please add an account no"
+        }
+
+        return isBusinessNoEmpty || isAccountNoEmpty
     }
 }

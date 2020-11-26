@@ -3,7 +3,6 @@ package com.jama.mpesa_biz_no_detector
 import android.app.Activity
 import android.content.Intent
 import android.graphics.Bitmap
-import android.util.Log
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import com.jama.mpesa_biz_no_detector.azureVisionRest.AzureVisionRest
@@ -19,7 +18,7 @@ import java.io.Serializable
 class MPESABizNoDetector(
     private val azureVisionEndPoint: String,
     private val azureVisionKey: String
-): Serializable {
+) : Serializable {
 
     private val activityClass = MPESABizNoDetectorActivity::class.java
 
@@ -60,6 +59,12 @@ class MPESABizNoDetector(
 
     private fun performFuzzySearch(choices: List<String>): DetectedBizNo {
         return SearchBizNo(choices).search() ?: throw Exception("Detected Biz No not found")
+    }
+
+    companion object {
+        fun getActivityResult(data: Intent): DetectedBizNo {
+            return data.getSerializableExtra("detectedBizNo") as DetectedBizNo
+        }
     }
 
 }

@@ -90,9 +90,9 @@ class CameraFragment : Fragment() {
         )
         layoutParams.apply {
             bottomToBottom = ConstraintSet.PARENT_ID
-            endToEnd  = ConstraintSet.PARENT_ID
-            startToStart  = ConstraintSet.PARENT_ID
-            topToTop  = ConstraintSet.PARENT_ID
+            endToEnd = ConstraintSet.PARENT_ID
+            startToStart = ConstraintSet.PARENT_ID
+            topToTop = ConstraintSet.PARENT_ID
         }
         imageView.apply {
             this.layoutParams = layoutParams
@@ -150,7 +150,7 @@ class CameraFragment : Fragment() {
 
             cameraProvider.unbindAll()
             cameraProvider.bindToLifecycle(
-                this,
+                viewLifecycleOwner,
                 CameraSelector.DEFAULT_BACK_CAMERA,
                 preview,
                 imageAnalyzer

@@ -13,8 +13,10 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="24dp"
         android:text="@string/retry"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="@+id/guideline3" />
+        app:layout_constraintStart_toStartOf="@+id/guideline3"
+        tools:visibility="visible" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline3"
@@ -35,9 +37,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/proceed"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="@+id/buttonRetry"
         app:layout_constraintEnd_toStartOf="@+id/guideline4"
-        app:layout_constraintTop_toTopOf="@+id/buttonRetry" />
+        app:layout_constraintTop_toTopOf="@+id/buttonRetry"
+        tools:visibility="visible" />
 
     <ImageView
         android:id="@+id/imageViewDetected"

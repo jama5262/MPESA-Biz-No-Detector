@@ -21,16 +21,8 @@ class MPESABizNoDetectorActivity : AppCompatActivity() {
 
     fun sendResults(detectedBizNo: DetectedBizNo) {
         val intent = Intent()
-        intent.putExtra("name", "Jama Mohamed")
+        intent.putExtra("detectedBizNo", detectedBizNo)
         setResult(Activity.RESULT_OK, intent)
         finish()
     }
-
-//    override fun onBackPressed() {
-//        val intent = Intent()
-//        intent.putExtra("name", "Jama Mohamed")
-//        setResult(Activity.RESULT_OK, intent)
-//        finish()
-//    }
-
 }
