@@ -5,6 +5,7 @@
     <color name="colorSecondary">#FFFFFF</color>
     <color name="colorSurface">#424242</color>
     <color name="colorOnSurface">#FFFFFF</color>
+    <color name="colorError">#B00020</color>
 
     <color name="object_reticle_outer_ring_fill">#1F000000</color>
     <color name="object_reticle_outer_ring_stroke">#9AFFFFFF</color>

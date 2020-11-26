@@ -1,5 +1,7 @@
 <resources>
     <string name="camera_message_1">Point your camera at an MPESA sticker</string>
     <string name="camera_message_2">Keep camera still for a moment</string>
+    <string name="proceed">Proceed</string>
+    <string name="retry">Retry</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
