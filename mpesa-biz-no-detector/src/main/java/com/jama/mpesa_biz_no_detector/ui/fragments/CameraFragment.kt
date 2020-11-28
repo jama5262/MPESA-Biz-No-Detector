@@ -30,6 +30,7 @@ import com.jama.mpesa_biz_no_detector.R
 import com.jama.mpesa_biz_no_detector.camera.CameraAnalyzer
 import com.jama.mpesa_biz_no_detector.states.CameraFlowState
 import com.jama.mpesa_biz_no_detector.utils.Constants
+import com.jama.mpesa_biz_no_detector.utils.animateImageView
 import com.jama.mpesa_biz_no_detector.utils.navigateToFragment
 import kotlinx.android.synthetic.main.fragment_camera.view.*
 import java.util.concurrent.ExecutorService
@@ -108,20 +109,11 @@ class CameraFragment : Fragment() {
             transitionName = Constants.TRANSITION_NAME
             setImageBitmap(bitmap)
         }
-        AndroidAnimation().apply {
-            duration = 1000
-            easing = Easing.EXP_OUT
-            targetViews(imageView)
-            scaleX(0.5f, 1f)
-            scaleY(0.5f, 1f)
-            onAnimationStart {
-                rootView.cameraLayout.addView(imageView)
-            }
-            onAnimationEnd {
-                navigateToResult(imageView, bitmap)
-            }
-            start()
-        }
+        animateImageView(
+            imageView,
+            { rootView.cameraLayout.addView(imageView) },
+            { navigateToResult(imageView, bitmap) }
+        )
     }
 
     private fun Int.toDp() = (this * resources.displayMetrics.density).toInt() + 50

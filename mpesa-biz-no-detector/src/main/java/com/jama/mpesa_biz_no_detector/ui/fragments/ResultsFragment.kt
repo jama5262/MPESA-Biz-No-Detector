@@ -22,6 +22,7 @@ import com.jama.mpesa_biz_no_detector.states.BizNoType
 import com.jama.mpesa_biz_no_detector.states.ResultsState
 import com.jama.mpesa_biz_no_detector.ui.MPESABizNoDetectorActivity
 import com.jama.mpesa_biz_no_detector.utils.Constants
+import com.jama.mpesa_biz_no_detector.utils.animateResults
 import kotlinx.android.synthetic.main.fragment_results.view.*
 import kotlinx.android.synthetic.main.sucess.view.*
 import kotlinx.coroutines.launch
@@ -165,24 +166,14 @@ class ResultsFragment : Fragment() {
                 }
             }
         }
-        animate(rootView.includeSuccess)
+        animateResults(rootView.includeSuccess, rootView.width.toFloat())
     }
 
     private fun fail() {
         rootView.includeFail.visibility = View.VISIBLE
         rootView.includeSuccess.visibility = View.GONE
         rootView.buttonRetry.visibility = View.VISIBLE
-        animate(rootView.includeFail)
-    }
-
-    private fun animate(targetView: View) {
-        AndroidAnimation().apply {
-            duration = 1500
-            easing = Easing.EXP_OUT
-            targetViews(targetView)
-            translateX(rootView.width.toFloat(), 0f)
-            start()
-        }
+        animateResults(rootView.includeFail, rootView.width.toFloat())
     }
 
     private fun areTextFieldsEmpty(type: BizNoType): Boolean {
