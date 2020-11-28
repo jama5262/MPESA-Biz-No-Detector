@@ -29,17 +29,13 @@ import com.google.common.util.concurrent.ListenableFuture
 import com.jama.mpesa_biz_no_detector.R
 import com.jama.mpesa_biz_no_detector.camera.CameraAnalyzer
 import com.jama.mpesa_biz_no_detector.states.CameraFlowState
+import com.jama.mpesa_biz_no_detector.utils.Constants
 import com.jama.mpesa_biz_no_detector.utils.navigateToFragment
 import kotlinx.android.synthetic.main.fragment_camera.view.*
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 
 class CameraFragment : Fragment() {
-
-    private companion object {
-        const val TRANSITION_NAME = "imageViewDetected"
-        const val BITMAP = "bitmap"
-    }
 
     private lateinit var rootView: View
 
@@ -109,7 +105,7 @@ class CameraFragment : Fragment() {
             setPadding(10, 10, 10, 10)
             cropToPadding = true
             scaleType = ImageView.ScaleType.CENTER_CROP
-            transitionName = TRANSITION_NAME
+            transitionName = Constants.TRANSITION_NAME
             setImageBitmap(bitmap)
         }
         AndroidAnimation().apply {
@@ -180,11 +176,11 @@ class CameraFragment : Fragment() {
 
     private fun navigateToResult(imageView: ImageView, bitmap: Bitmap) {
         val bundle = bundleOf(
-            BITMAP to bitmap
+            Constants.BITMAP to bitmap
         )
 
         val extras = FragmentNavigatorExtras(
-            imageView to TRANSITION_NAME
+            imageView to Constants.TRANSITION_NAME
         )
 
         findNavController().navigateToFragment(

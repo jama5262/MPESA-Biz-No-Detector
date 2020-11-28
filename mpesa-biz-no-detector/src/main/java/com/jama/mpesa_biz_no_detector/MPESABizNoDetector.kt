@@ -1,6 +1,7 @@
 package com.jama.mpesa_biz_no_detector
 
 import android.app.Activity
+import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
 import androidx.core.os.bundleOf
@@ -10,9 +11,9 @@ import com.jama.mpesa_biz_no_detector.fuzzySearch.SearchBizNo
 import com.jama.mpesa_biz_no_detector.models.DetectedBizNo
 import com.jama.mpesa_biz_no_detector.models.VisionResult
 import com.jama.mpesa_biz_no_detector.ui.MPESABizNoDetectorActivity
+import com.jama.mpesa_biz_no_detector.utils.Constants
 import com.jama.mpesa_biz_no_detector.utils.toByteArray
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.withContext
 import java.io.Serializable
 
@@ -21,21 +22,13 @@ class MPESABizNoDetector(
     private val azureVisionKey: String
 ) : Serializable {
 
-    fun start(activity: Activity, requestCode: Int) {
-        val intent = Intent(activity, ACTIVITY_CLASS)
-        val bundle = bundleOf(
-            CLASS_KEY to this
-        )
-        intent.putExtras(bundle)
+    fun startActivity(activity: Activity, requestCode: Int) {
+        val intent = getIntent(activity)
         activity.startActivityForResult(intent, requestCode)
     }
 
-    fun start(fragment: Fragment, requestCode: Int) {
-        val intent = Intent(fragment.context, ACTIVITY_CLASS)
-        val bundle = bundleOf(
-            CLASS_KEY to this
-        )
-        intent.putExtras(bundle)
+    fun startActivity(fragment: Fragment, requestCode: Int) {
+        val intent = getIntent(fragment.requireContext())
         fragment.startActivityForResult(intent, requestCode)
     }
 
@@ -57,15 +50,23 @@ class MPESABizNoDetector(
     }
 
     private fun performFuzzySearch(choices: List<String>): DetectedBizNo {
-        return SearchBizNo(choices).search() ?: throw Exception("Detected Biz No not found")
+        return SearchBizNo(choices).search() ?: throw Exception("Detected Biz Number not found")
+    }
+
+    private fun getIntent(context: Context): Intent {
+        val intent = Intent(context, ACTIVITY_CLASS)
+        val bundle = bundleOf(
+            Constants.MPESA_BIZ_NO_DETECTOR to this
+        )
+        intent.putExtras(bundle)
+        return intent
     }
 
     companion object {
-        private const val CLASS_KEY = "MPESABizNoDetector"
         private val ACTIVITY_CLASS = MPESABizNoDetectorActivity::class.java
 
         fun getActivityResult(data: Intent): DetectedBizNo {
-            return data.getSerializableExtra("detectedBizNo") as DetectedBizNo
+            return data.getSerializableExtra(Constants.DETECTED_BIZ_NO) as DetectedBizNo
         }
     }
 
