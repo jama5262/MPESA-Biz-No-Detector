@@ -73,7 +73,6 @@ class CameraReticleAnimator(private val graphicOverlay: GraphicOverlay) {
     }
 
     companion object {
-
         private const val DURATION_RIPPLE_FADE_IN_MS: Long = 333
         private const val DURATION_RIPPLE_FADE_OUT_MS: Long = 500
         private const val DURATION_RIPPLE_EXPAND_MS: Long = 833

@@ -36,6 +36,7 @@
         android:id="@+id/buttonProceed"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:elevation="0dp"
         android:text="@string/proceed"
         android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="@+id/buttonRetry"
@@ -46,7 +47,7 @@
     <ImageView
         android:id="@+id/imageViewDetected"
         android:layout_width="wrap_content"
-        android:layout_height="150dp"
+        android:layout_height="200dp"
         android:layout_marginTop="24dp"
         android:adjustViewBounds="true"
         android:cropToPadding="true"

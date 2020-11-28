@@ -45,7 +45,7 @@ class ObjectReticleGraphic(
                 resources.getDimensionPixelOffset(R.dimen.object_reticle_inner_ring_stroke_width)
                     .toFloat()
             strokeCap = Paint.Cap.ROUND
-            color = ContextCompat.getColor(context, R.color.colorOnPrimary)
+            color = ContextCompat.getColor(context, R.color.colorPrimaryLight)
         }
 
         ripplePaint = Paint().apply {

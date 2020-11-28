@@ -1,7 +1,7 @@
 <resources>
     <string name="camera_message_1">Point your camera at an MPESA sticker</string>
     <string name="camera_message_2">Keep camera still for a moment</string>
-    <string name="fail">Oops, we couldn\'t detect an MPESA business no, please try again</string>
+    <string name="fail">Oops, couldn\'t detect an MPESA business number, please try again</string>
     <string name="proceed">Proceed</string>
     <string name="retry">Retry</string>
     <string name="buy_goods_and_services">Buy Goods and Services</string>
