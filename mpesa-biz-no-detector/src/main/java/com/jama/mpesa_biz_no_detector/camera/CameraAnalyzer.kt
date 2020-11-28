@@ -1,14 +1,12 @@
 package com.jama.mpesa_biz_no_detector.camera
 
 import android.annotation.SuppressLint
-import android.util.Log
 import androidx.camera.core.ImageAnalysis
 import androidx.camera.core.ImageProxy
 import com.jama.mpesa_biz_no_detector.graphics.GraphicOverlay
 import com.jama.mpesa_biz_no_detector.graphics.GraphicsOverlayController
 import com.jama.mpesa_biz_no_detector.objectDetection.ObjectDetection
 import com.jama.mpesa_biz_no_detector.ui.fragments.CameraViewModel
-import com.jama.mpesa_biz_no_detector.utils.ObjectDetectionException
 import com.jama.mpesa_biz_no_detector.utils.toBitmap
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
@@ -16,7 +14,8 @@ import kotlinx.coroutines.launch
 class CameraAnalyzer(
     cameraViewModel: CameraViewModel,
     private val scope: CoroutineScope,
-    graphicOverlay: GraphicOverlay
+    graphicOverlay: GraphicOverlay,
+    private val catchErrorAction: () -> Unit
 ) : ImageAnalysis.Analyzer {
 
     private val objectDetection = ObjectDetection()
@@ -33,10 +32,8 @@ class CameraAnalyzer(
                     val bitmap = mediaImage.toBitmap()
                     val detectionResult = objectDetection.detect(bitmap, rotation)
                     graphicsOverlayController.start(detectionResult, getImageDimension(imageProxy))
-                } catch (e: ObjectDetectionException) {
-                    Log.e("jjj", "Object detection error -> ${e.message}")
                 } catch (e: Exception) {
-                    Log.e("jjj", "Error found -> ${e.message}")
+                    catchErrorAction()
                 } finally {
                     imageProxy.close()
                 }

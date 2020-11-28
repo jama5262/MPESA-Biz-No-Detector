@@ -1,14 +1,95 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ui.fragments.ResultsFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+    <Button
+        android:id="@+id/buttonRetry"
+        style="?attr/materialButtonOutlinedStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="24dp"
+        android:text="@string/retry"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/guideline3"
+        tools:visibility="visible" />
 
-</FrameLayout>
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_begin="32dp" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_end="32dp" />
+
+    <Button
+        android:id="@+id/buttonProceed"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:elevation="0dp"
+        android:text="@string/proceed"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@+id/buttonRetry"
+        app:layout_constraintEnd_toStartOf="@+id/guideline4"
+        app:layout_constraintTop_toTopOf="@+id/buttonRetry"
+        tools:visibility="visible" />
+
+    <ImageView
+        android:id="@+id/imageViewDetected"
+        android:layout_width="wrap_content"
+        android:layout_height="200dp"
+        android:layout_marginTop="24dp"
+        android:adjustViewBounds="true"
+        android:cropToPadding="true"
+        android:padding="3dp"
+        android:scaleType="centerCrop"
+        app:layout_constraintEnd_toStartOf="@+id/guideline4"
+        app:layout_constraintStart_toStartOf="@+id/guideline3"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:src="@tools:sample/avatars" />
+
+    <include
+        android:id="@+id/includeSuccess"
+        layout="@layout/sucess"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        app:layout_constraintBottom_toTopOf="@+id/buttonRetry"
+        app:layout_constraintEnd_toStartOf="@+id/guideline4"
+        app:layout_constraintStart_toStartOf="@+id/guideline3"
+        app:layout_constraintTop_toBottomOf="@+id/imageViewDetected"
+        tools:visibility="visible" />
+
+    <include
+        android:id="@+id/includeFail"
+        layout="@layout/fail"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        app:layout_constraintBottom_toTopOf="@+id/buttonRetry"
+        app:layout_constraintEnd_toStartOf="@+id/guideline4"
+        app:layout_constraintStart_toStartOf="@+id/guideline3"
+        app:layout_constraintTop_toBottomOf="@+id/imageViewDetected"
+        tools:visibility="gone" />
+
+    <ProgressBar
+        android:id="@+id/progressBar"
+        style="?android:attr/progressBarStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:indeterminate="true"
+        app:layout_constraintBottom_toBottomOf="@+id/imageViewDetected"
+        app:layout_constraintEnd_toEndOf="@+id/imageViewDetected"
+        app:layout_constraintStart_toStartOf="@+id/imageViewDetected"
+        app:layout_constraintTop_toTopOf="@+id/imageViewDetected" />
+</androidx.constraintlayout.widget.ConstraintLayout>

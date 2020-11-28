@@ -1,19 +1,13 @@
 package com.jama.mpesa_biz_no_detector.ui.fragments
 
-import android.app.Application
 import android.graphics.Bitmap
-import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
-import com.jama.mpesa_biz_no_detector.enums.CameraFlowState
+import androidx.lifecycle.ViewModel
+import com.jama.mpesa_biz_no_detector.states.CameraFlowState
 
-class CameraViewModel(app: Application): AndroidViewModel(app) {
+class CameraViewModel : ViewModel() {
 
-    private val context = app.applicationContext
-
-    private val _confirmedBitmap = MutableLiveData<Bitmap>()
-    val confirmedBitmap = _confirmedBitmap
-
-    private val _cameraFlowState = MutableLiveData(CameraFlowState.DETECTING)
+    private val _cameraFlowState = MutableLiveData<CameraFlowState>(CameraFlowState.Detecting)
     val cameraFlowState = _cameraFlowState
 
     fun setCameraFlowState(cameraFlowState: CameraFlowState) {
@@ -23,10 +17,9 @@ class CameraViewModel(app: Application): AndroidViewModel(app) {
     fun confirmingObject(confirmedBitmap: Bitmap, progress: Float) {
         val isConfirmed = progress.compareTo(1f) == 0
         if (isConfirmed) {
-            this._confirmedBitmap.value = confirmedBitmap
-            setCameraFlowState(CameraFlowState.CONFIRMED)
+            setCameraFlowState(CameraFlowState.Confirmed(confirmedBitmap))
         } else {
-            setCameraFlowState(CameraFlowState.CONFIRMING)
+            setCameraFlowState(CameraFlowState.Confirming)
         }
     }
 }

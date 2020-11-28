@@ -42,7 +42,7 @@ class ObjectConfirmationGraphic(
                 resources.getDimensionPixelOffset(R.dimen.object_reticle_outer_ring_stroke_width)
                     .toFloat()
             strokeCap = Paint.Cap.ROUND
-            color = ContextCompat.getColor(context, R.color.colorOnPrimary)
+            color = ContextCompat.getColor(context, R.color.colorPrimaryLight)
         }
 
         innerRingPaint = Paint()
@@ -51,8 +51,7 @@ class ObjectConfirmationGraphic(
             resources.getDimensionPixelOffset(R.dimen.object_reticle_inner_ring_stroke_width)
                 .toFloat()
         innerRingPaint.strokeCap = Paint.Cap.ROUND
-        innerRingPaint.color = ContextCompat.getColor(context, R.color.colorOnPrimary)
-
+        innerRingPaint.color = ContextCompat.getColor(context, R.color.colorPrimaryLight)
 
         outerRingFillRadius =
             resources.getDimensionPixelOffset(R.dimen.object_reticle_outer_ring_fill_radius)
@@ -79,9 +78,9 @@ class ObjectConfirmationGraphic(
         val sweepAngle = confirmationController.progress * 360
         canvas.drawArc(
             progressRect,
-            /* startAngle= */ 0f,
+            0f,
             sweepAngle,
-            /* useCenter= */ false,
+            false,
             progressRingStrokePaint
         )
     }

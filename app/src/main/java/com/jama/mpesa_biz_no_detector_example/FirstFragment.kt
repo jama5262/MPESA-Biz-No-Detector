@@ -35,7 +35,7 @@ class FirstFragment : Fragment() {
     ): View? {
         rootView = inflater.inflate(R.layout.fragment_first, container, false)
 
-        rootView.button2.setOnClickListener {
+        rootView.buttonProceed.setOnClickListener {
             lifecycleScope.launch(Dispatchers.IO) {
                 try {
                     val bitmap = getBitmap() ?: throw Exception("Bitmap Not found")
@@ -61,9 +61,8 @@ class FirstFragment : Fragment() {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == 2) {
             if (resultCode == Activity.RESULT_OK) {
-                Log.e("jjj", "called from fragment")
-                val name = data?.getStringExtra("name")
-                Toast.makeText(requireContext(), name, Toast.LENGTH_LONG).show()
+                val detectedBizNo = MPESABizNoDetector.getActivityResult(data!!)
+                Log.e("jjj", "$detectedBizNo")
             }
         }
     }

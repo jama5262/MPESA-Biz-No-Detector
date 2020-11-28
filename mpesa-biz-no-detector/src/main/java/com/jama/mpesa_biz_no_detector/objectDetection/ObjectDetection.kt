@@ -6,7 +6,6 @@ import com.google.mlkit.vision.common.InputImage
 import com.google.mlkit.vision.objects.DetectedObject
 import com.google.mlkit.vision.objects.ObjectDetection
 import com.google.mlkit.vision.objects.defaults.ObjectDetectorOptions
-import com.jama.mpesa_biz_no_detector.utils.ObjectDetectionException
 import com.jama.mpesa_biz_no_detector.utils.resize
 import com.jama.mpesa_biz_no_detector.utils.rotate
 import kotlin.coroutines.resume
@@ -31,7 +30,7 @@ class ObjectDetection {
                     continuation.resume(detectionResult)
                 }
                 .addOnFailureListener {
-                    continuation.resumeWithException(ObjectDetectionException("Object detection error -> ${it.message}"))
+                    continuation.resumeWithException(Exception("Object detection error -> ${it.message}"))
                 }
         }
     }
@@ -52,9 +51,4 @@ class ObjectDetection {
         if (detectedBitmap == null) return null
         return Triple(detectedBitmap, boundingBox, trackingId)
     }
-
-    fun closeDetection() {
-        objectDetector.close()
-    }
-
 }

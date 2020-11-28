@@ -4,7 +4,7 @@ import android.graphics.Bitmap
 import android.graphics.Rect
 import android.graphics.RectF
 import com.jama.mpesa_biz_no_detector.camera.CameraReticleAnimator
-import com.jama.mpesa_biz_no_detector.enums.CameraFlowState
+import com.jama.mpesa_biz_no_detector.states.CameraFlowState
 import com.jama.mpesa_biz_no_detector.ui.fragments.CameraViewModel
 
 class GraphicsOverlayController(
@@ -29,7 +29,7 @@ class GraphicsOverlayController(
             graphicOverlay.add(ObjectReticleGraphic(graphicOverlay, cameraReticleAnimator))
             cameraReticleAnimator.start()
             objectConfirmationController.reset()
-            cameraViewModel.setCameraFlowState(CameraFlowState.DETECTING)
+            cameraViewModel.setCameraFlowState(CameraFlowState.Detecting)
         } else {
             if (objectBoxOverlapsConfirmationReticle(detectionResult.second)) {
                 // User is confirming the object selection.
@@ -57,7 +57,7 @@ class GraphicsOverlayController(
             } else {
                 // Object is detected but the confirmation reticle is moved off the object box, which
                 // indicates user is not trying to pick this object.
-                cameraViewModel.setCameraFlowState(CameraFlowState.DETECTED)
+                cameraViewModel.setCameraFlowState(CameraFlowState.Detected)
                 objectConfirmationController.reset()
                 graphicOverlay.add(
                     ObjectDetectedGraphic(
@@ -68,7 +68,7 @@ class GraphicsOverlayController(
                 )
                 graphicOverlay.add(ObjectReticleGraphic(graphicOverlay, cameraReticleAnimator))
                 cameraReticleAnimator.start()
-                cameraViewModel.setCameraFlowState(CameraFlowState.DETECTED)
+                cameraViewModel.setCameraFlowState(CameraFlowState.Detected)
             }
         }
     }

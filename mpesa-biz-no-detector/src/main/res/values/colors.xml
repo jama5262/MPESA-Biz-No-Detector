@@ -1,18 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#37B448</color>
+    <color name="colorPrimary">#4CAF50</color>
+    <color name="colorPrimaryLight">#00E676</color>
     <color name="colorOnPrimary">#FFFFFF</color>
     <color name="colorSecondary">#FFFFFF</color>
-    <color name="colorSurface">#424242</color>
+    <color name="colorSurface">#4CAF50</color>
     <color name="colorOnSurface">#FFFFFF</color>
+    <color name="colorError">#B00020</color>
 
-    <color name="object_reticle_outer_ring_fill">#1F000000</color>
-    <color name="object_reticle_outer_ring_stroke">#9AFFFFFF</color>
+    <color name="object_reticle_outer_ring_fill">#65C8E6C9</color>
+    <color name="object_reticle_outer_ring_stroke">#CD81C784</color>
     <color name="object_confirmed_bg_gradient_start">#40000000</color>
     <color name="object_confirmed_bg_gradient_end">#A0000000</color>
     <color name="object_detected_bg_gradient_start">#00000000</color>
     <color name="object_detected_bg_gradient_end">#66000000</color>
     <color name="bounding_box_gradient_start">#00FFFFFF</color>
-    <color name="bounding_box_gradient_end">@color/colorOnPrimary</color>
-    <color name="reticle_ripple">#9AFFFFFF</color>
+    <color name="bounding_box_gradient_end">@color/colorPrimaryLight</color>
+    <color name="reticle_ripple">#81C784</color>
 </resources>

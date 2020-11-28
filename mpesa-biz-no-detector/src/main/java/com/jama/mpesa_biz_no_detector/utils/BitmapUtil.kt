@@ -7,9 +7,7 @@ import java.io.ByteArrayOutputStream
 fun Bitmap.toByteArray(): ByteArray {
     val stream = ByteArrayOutputStream()
     this.compress(Bitmap.CompressFormat.JPEG, 100, stream)
-    val byteArray = stream.toByteArray()
-    this.recycle()
-    return byteArray
+    return stream.toByteArray()
 }
 
 fun Image.toBitmap(): Bitmap {
