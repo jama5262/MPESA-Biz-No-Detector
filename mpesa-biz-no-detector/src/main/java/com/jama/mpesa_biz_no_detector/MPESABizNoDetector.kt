@@ -11,7 +11,9 @@ import com.jama.mpesa_biz_no_detector.fuzzySearch.SearchBizNo
 import com.jama.mpesa_biz_no_detector.models.DetectedBizNo
 import com.jama.mpesa_biz_no_detector.models.VisionResult
 import com.jama.mpesa_biz_no_detector.ui.MPESABizNoDetectorActivity
+import com.jama.mpesa_biz_no_detector.utils.BizNoSearchException
 import com.jama.mpesa_biz_no_detector.utils.Constants
+import com.jama.mpesa_biz_no_detector.utils.VisionException
 import com.jama.mpesa_biz_no_detector.utils.toByteArray
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -63,11 +65,13 @@ class MPESABizNoDetector(
             azureVisionKey,
             byteArray
         )
-        return azureVisionRest.startVision() ?: throw Exception("Vision result not found")
+        return azureVisionRest.startVision()
+            ?: throw VisionException("Could not find vision result from the image")
     }
 
     private fun performFuzzySearch(choices: List<String>): DetectedBizNo {
-        return SearchBizNo(choices).search() ?: throw Exception("Detected Biz Number not found")
+        return SearchBizNo(choices).search()
+            ?: throw BizNoSearchException("Could not find business number in the image")
     }
 
     private fun getIntent(context: Context): Intent {

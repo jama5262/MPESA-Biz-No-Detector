@@ -14,6 +14,8 @@ import androidx.lifecycle.lifecycleScope
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.jama.mpesa_biz_no_detector.MPESABizNoDetector
 import com.jama.mpesa_biz_no_detector.models.DetectedBizNo
+import com.jama.mpesa_biz_no_detector.utils.BizNoSearchException
+import com.jama.mpesa_biz_no_detector.utils.VisionException
 import com.karumi.dexter.Dexter
 import com.karumi.dexter.PermissionToken
 import com.karumi.dexter.listener.PermissionDeniedResponse
@@ -51,7 +53,16 @@ class MainActivity : AppCompatActivity() {
                 val bitmap = getBitmap()
                 val detectedBizNo = mpesaBizNoDetector.detect(bitmap)
                 showDetectedBizNoInfo(detectedBizNo)
+            } catch (e: VisionException) {
+//                Vision detection failed, request user to try again
+                Log.e("jjj", "Vision Error -> ${e.message}")
+            } catch (e: BizNoSearchException) {
+//                Image detected but could not find a valid MPESA business or account number
+//                from them image.
+//                Request user to move closer and try again
+                Log.e("jjj", "Biz no search error -> ${e.message}")
             } catch (e: Exception) {
+//                Unknown error found
                 Log.e("jjj", "Error found -> ${e.message}")
             }
         }

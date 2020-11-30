@@ -2,6 +2,7 @@ package com.jama.mpesa_biz_no_detector.azureVisionRest
 
 import com.jama.mpesa_biz_no_detector.models.VisionResult
 import com.jama.mpesa_biz_no_detector.utils.Constants
+import com.jama.mpesa_biz_no_detector.utils.VisionException
 import okhttp3.MediaType
 import okhttp3.RequestBody
 import retrofit2.Response
@@ -27,7 +28,7 @@ class AzureVisionRest(
         val analyzedResponse = analyze()
         val headers = analyzedResponse.headers()
         val requestId =
-            headers.get("apim-request-id") ?: throw Exception("Request ID not found")
+            headers.get("apim-request-id") ?: throw VisionException("Request ID not found")
 
         var pool = true
         var visionResult: VisionResult? = null
