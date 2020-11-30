@@ -22,16 +22,33 @@ class MPESABizNoDetector(
     private val azureVisionKey: String
 ) : Serializable {
 
+    /**
+     * Starts vision activity from activity class
+     *
+     * @param activity the activity class
+     * @param requestCode the request code
+     */
     fun startActivity(activity: Activity, requestCode: Int) {
         val intent = getIntent(activity)
         activity.startActivityForResult(intent, requestCode)
     }
 
+    /**
+     * Starts vision activity from fragment class
+     *
+     * @param fragment the fragment class
+     * @param requestCode the request code
+     */
     fun startActivity(fragment: Fragment, requestCode: Int) {
         val intent = getIntent(fragment.requireContext())
         fragment.startActivityForResult(intent, requestCode)
     }
 
+    /**
+     * Starts azure vision detection and return a DetectedBizNo.
+     *
+     * @param bitmap the bitmap image
+     */
     suspend fun detect(bitmap: Bitmap): DetectedBizNo {
         val visionResult = withContext(Dispatchers.IO) { getVisionResult(bitmap) }
         val visionReadResults = visionResult.analyzeResult.readResults[0]
