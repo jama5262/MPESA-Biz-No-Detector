@@ -106,7 +106,7 @@ class MainActivity : AppCompatActivity() {
                 Log.e("jjj", "Vision Error -> ${e.message}")
             } catch (e: BizNoSearchException) {
 //                Image detected but could not find a valid MPESA business or account number
-//                from them image.
+//                from the image.
 //                Request user to try another image and try again
                 Log.e("jjj", "Biz no search error -> ${e.message}")
             } catch (e: Exception) {

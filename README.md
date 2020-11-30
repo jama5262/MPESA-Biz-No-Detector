@@ -1,15 +1,17 @@
 # MPESA-Biz-No-Detector
 
-The descrption of library
+An android detection library that uses Azure Computer Vision Read API to detect MPESA business and/or account numbers
 
 Examples
 
 ## Demos
+Put demos here
 
 ## Prerequisite
+- Understanding of Microsoft Azure
 - An Azure subscription - Create one for free
-- Once you have your Azure subscription, create a `Computer Vision resource` in the Azure portal to get your key and endpoint. After it deploys, click `Go to resource`.
-You will need the `key` and `endpoint` from the resource you create to connect your application to the Computer Vision service. You can use the free pricing tier (F0) to try the service, and upgrade later to a paid tier for production.
+- Once you have your Azure subscription, create a `Computer Vision resource` in the Azure portal to get your `key` and `endpoint`. After it deploys, click Go to resource.
+You will need the `key` and `endpoint` from the resource you created to connect your application to the Computer Vision service. You can use the free pricing tier (F0) to try the service, and upgrade later to a paid tier for production.
 
 ## Installation
 
@@ -57,11 +59,62 @@ Great the project has been setup 👍
 
 ## Usage
 
-There are a two ways you can use the library. Either by starting a vision activity which requires the `CAMERA` feature or the detect 
+There are a two ways you can use the library. Either by starting a vision activity which requires the `CAMERA` feature that uses Object Detection to crop out important part of the image and returns the result or by passing your own image to the `detect()` method that also returns the same results
+
+```kotlin
+const val CAMERA_REQUEST_CODE = 1
+private val mpesaBizNoDetector = MPESABizNoDetector(
+    AZURE_VISION_ENDPOINT,
+    AZURE_VISION_KEY
+)
+```
 
 ### Start Vision Activity
 
+```kotlin
+private fun startVisionActivity() {
+    mpesaBizNoDetector.startActivity(this@MainActivity, CAMERA_REQUEST_CODE)
+}
+
+// You can also start the vision activty from a Fragment
+private fun startVisionActivity() {
+    mpesaBizNoDetector.startActivity(this@Fragment, CAMERA_REQUEST_CODE)
+}
+```
+
+```kotlin
+override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+    super.onActivityResult(requestCode, resultCode, data)
+    if (requestCode == CAMERA_REQUEST_CODE) {
+        if (resultCode == Activity.RESULT_OK) {
+            val detectedBizNo = MPESABizNoDetector.getActivityResult(data!!)
+            
+        }
+    }
+}
+```
+
 ### Detect from Function
+```kotlin
+private suspend fun detectFromBitmapImage() {
+    try {
+        val bitmap = getBitmap()
+        val detectedBizNo = mpesaBizNoDetector.detect(bitmap)
+        
+    } catch (e: VisionException) {
+        //Vision detection failed, request user to try again
+        Log.e(TAG, "Vision Error -> ${e.message}")
+    } catch (e: BizNoSearchException) {
+        //Image detected but could not find a valid MPESA
+        //business or account number from the image.
+        //Request user to try another image and try again
+        Log.e(TAG, "Biz no search error -> ${e.message}")
+    } catch (e: Exception) {
+//                Unknown error found
+        Log.e(TAG, "Error found -> ${e.message}")
+    }
+}
+```
 
 ## Support
 
