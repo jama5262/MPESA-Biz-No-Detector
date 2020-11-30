@@ -11,7 +11,9 @@ import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.jama.mpesa_biz_no_detector.MPESABizNoDetector
+import com.jama.mpesa_biz_no_detector.models.DetectedBizNo
 import com.karumi.dexter.Dexter
 import com.karumi.dexter.PermissionToken
 import com.karumi.dexter.listener.PermissionDeniedResponse
@@ -19,7 +21,6 @@ import com.karumi.dexter.listener.PermissionGrantedResponse
 import com.karumi.dexter.listener.PermissionRequest
 import com.karumi.dexter.listener.single.PermissionListener
 import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.io.InputStream
 
@@ -44,12 +45,41 @@ class MainActivity : AppCompatActivity() {
         mpesaBizNoDetector.startActivity(this@MainActivity, CAMERA_REQUEST_CODE)
     }
 
+    private fun detectFromBitmapImage() {
+        lifecycleScope.launch {
+            try {
+                val bitmap = getBitmap()
+                val detectedBizNo = mpesaBizNoDetector.detect(bitmap)
+                showDetectedBizNoInfo(detectedBizNo)
+            } catch (e: Exception) {
+                Log.e("jjj", "Error found -> ${e.message}")
+            }
+        }
+    }
+
+    private fun showDetectedBizNoInfo(detectedBizNo: DetectedBizNo) {
+        val type = "type -> ${detectedBizNo.type}"
+        val businessNo = "business no -> ${detectedBizNo.businessNo}"
+        val accountNo = "account no -> ${detectedBizNo.accountNo}"
+
+        val message = "$type\n$businessNo\n$accountNo"
+
+        MaterialAlertDialogBuilder(this)
+            .setTitle("Detected Business No")
+            .setMessage(message)
+            .setNeutralButton("Close") { dialog, _ ->
+                dialog.dismiss()
+            }
+            .show()
+    }
+
     private fun checkForPermissions() {
         Dexter.withContext(this)
             .withPermission(Manifest.permission.CAMERA)
             .withListener(object : PermissionListener {
                 override fun onPermissionGranted(response: PermissionGrantedResponse) {
-                    startVisionActivity()
+//                    startVisionActivity()
+                    detectFromBitmapImage()
                 }
 
                 override fun onPermissionDenied(response: PermissionDeniedResponse) {
@@ -69,11 +99,11 @@ class MainActivity : AppCompatActivity() {
             }).check()
     }
 
-    private fun getBitmap(): Bitmap? {
+    private fun getBitmap(): Bitmap {
         val assetManager: AssetManager = assets
-        val istr: InputStream = assetManager.open("image.jpg")
-        val bitmap = BitmapFactory.decodeStream(istr)
-        istr.close()
+        val stream: InputStream = assetManager.open("image.jpg")
+        val bitmap = BitmapFactory.decodeStream(stream)
+        stream.close()
         return bitmap
     }
 
@@ -81,9 +111,8 @@ class MainActivity : AppCompatActivity() {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == CAMERA_REQUEST_CODE) {
             if (resultCode == Activity.RESULT_OK) {
-                val name = data?.getStringExtra("name")
-                Log.e("jjj", "called from activity")
-                Toast.makeText(this, name, Toast.LENGTH_LONG).show()
+                val detectedBizNo = MPESABizNoDetector.getActivityResult(data!!)
+                showDetectedBizNoInfo(detectedBizNo)
             }
         }
     }
