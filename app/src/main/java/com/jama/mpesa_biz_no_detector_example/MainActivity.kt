@@ -1,5 +1,6 @@
 package com.jama.mpesa_biz_no_detector_example
 
+import android.Manifest
 import android.app.Activity
 import android.content.Intent
 import android.content.res.AssetManager
@@ -11,11 +12,17 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import com.jama.mpesa_biz_no_detector.MPESABizNoDetector
+import com.karumi.dexter.Dexter
+import com.karumi.dexter.PermissionToken
+import com.karumi.dexter.listener.PermissionDeniedResponse
+import com.karumi.dexter.listener.PermissionGrantedResponse
+import com.karumi.dexter.listener.PermissionRequest
+import com.karumi.dexter.listener.single.PermissionListener
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.io.InputStream
-import java.lang.Exception
+
 
 class MainActivity : AppCompatActivity() {
 
@@ -29,17 +36,37 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         buttonGetStarted.setOnClickListener {
-            lifecycleScope.launch(Dispatchers.IO) {
-                try {
-                    val bitmap = getBitmap() ?: throw Exception("Bitmap Not found")
-                    mpesaBizNoDetector.startActivity(this@MainActivity, 1)
-//                    mpesaBizNoDetector.detect(bitmap)
-                } catch (e: Exception) {
-                    Log.e("jjj", "Error found -> ${e.message}")
-                }
-            }
+            checkForPermissions()
         }
+    }
 
+    private fun startVisionActivity() {
+        mpesaBizNoDetector.startActivity(this@MainActivity, CAMERA_REQUEST_CODE)
+    }
+
+    private fun checkForPermissions() {
+        Dexter.withContext(this)
+            .withPermission(Manifest.permission.CAMERA)
+            .withListener(object : PermissionListener {
+                override fun onPermissionGranted(response: PermissionGrantedResponse) {
+                    startVisionActivity()
+                }
+
+                override fun onPermissionDenied(response: PermissionDeniedResponse) {
+                    Toast.makeText(
+                        this@MainActivity,
+                        "Camera permission required",
+                        Toast.LENGTH_LONG
+                    ).show()
+                }
+
+                override fun onPermissionRationaleShouldBeShown(
+                    permission: PermissionRequest?,
+                    token: PermissionToken?
+                ) {
+                    token?.continuePermissionRequest()
+                }
+            }).check()
     }
 
     private fun getBitmap(): Bitmap? {
@@ -52,12 +79,16 @@ class MainActivity : AppCompatActivity() {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == 1) {
+        if (requestCode == CAMERA_REQUEST_CODE) {
             if (resultCode == Activity.RESULT_OK) {
                 val name = data?.getStringExtra("name")
                 Log.e("jjj", "called from activity")
                 Toast.makeText(this, name, Toast.LENGTH_LONG).show()
             }
         }
+    }
+
+    companion object {
+        const val CAMERA_REQUEST_CODE = 1
     }
 }
