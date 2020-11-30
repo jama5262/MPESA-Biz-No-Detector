@@ -11,7 +11,6 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.lifecycle.lifecycleScope
 import com.jama.mpesa_biz_no_detector.MPESABizNoDetector
 import kotlinx.android.synthetic.main.fragment_first.view.*
@@ -39,7 +38,7 @@ class FirstFragment : Fragment() {
             lifecycleScope.launch(Dispatchers.IO) {
                 try {
                     val bitmap = getBitmap() ?: throw Exception("Bitmap Not found")
-                    mpesaBizNoDetector.start(this@FirstFragment, 2)
+                    mpesaBizNoDetector.startActivity(this@FirstFragment, 2)
                 } catch (e: Exception) {
                     Log.e("jjj", "Error found -> ${e.message}")
                 }

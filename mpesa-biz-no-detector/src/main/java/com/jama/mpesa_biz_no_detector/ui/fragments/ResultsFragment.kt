@@ -21,18 +21,13 @@ import com.jama.mpesa_biz_no_detector.models.DetectedBizNo
 import com.jama.mpesa_biz_no_detector.states.BizNoType
 import com.jama.mpesa_biz_no_detector.states.ResultsState
 import com.jama.mpesa_biz_no_detector.ui.MPESABizNoDetectorActivity
+import com.jama.mpesa_biz_no_detector.utils.Constants
+import com.jama.mpesa_biz_no_detector.utils.animateResults
 import kotlinx.android.synthetic.main.fragment_results.view.*
 import kotlinx.android.synthetic.main.sucess.view.*
 import kotlinx.coroutines.launch
 
 class ResultsFragment : Fragment() {
-
-    private companion object {
-        const val BITMAP = "bitmap"
-        const val SHARED_ANIM_DURATION = 400L
-        const val SHARED_ANIM_DELAY = 400L
-        const val TRANSITION_NAME = "imageViewDetected"
-    }
 
     private lateinit var rootView: View
 
@@ -52,7 +47,7 @@ class ResultsFragment : Fragment() {
 
     private fun initialize() {
         setUpObservers()
-        val bitmap = requireArguments().getParcelable<Bitmap>(BITMAP)!!
+        val bitmap = requireArguments().getParcelable<Bitmap>(Constants.BITMAP)!!
         setUpSharedAnimation()
         setUpImageView(bitmap)
         setUpViews()
@@ -62,8 +57,8 @@ class ResultsFragment : Fragment() {
     private fun setUpSharedAnimation() {
         sharedElementEnterTransition = TransitionInflater.from(context)
             .inflateTransition(android.R.transition.move).apply {
-                duration = SHARED_ANIM_DURATION
-                startDelay = SHARED_ANIM_DELAY
+                duration = Constants.SHARED_ANIM_DURATION
+                startDelay = Constants.SHARED_ANIM_DELAY
             }
     }
 
@@ -77,7 +72,7 @@ class ResultsFragment : Fragment() {
                     background = shape
                 }
                 setImageBitmap(bitmap)
-                transitionName = TRANSITION_NAME
+                transitionName = Constants.TRANSITION_NAME
             }
         }
     }
@@ -171,24 +166,14 @@ class ResultsFragment : Fragment() {
                 }
             }
         }
-        animate(rootView.includeSuccess)
+        animateResults(rootView.includeSuccess, rootView.width.toFloat())
     }
 
     private fun fail() {
         rootView.includeFail.visibility = View.VISIBLE
         rootView.includeSuccess.visibility = View.GONE
         rootView.buttonRetry.visibility = View.VISIBLE
-        animate(rootView.includeFail)
-    }
-
-    private fun animate(targetView: View) {
-        AndroidAnimation().apply {
-            duration = 1500
-            easing = Easing.EXP_OUT
-            targetViews(targetView)
-            translateX(rootView.width.toFloat(), 0f)
-            start()
-        }
+        animateResults(rootView.includeFail, rootView.width.toFloat())
     }
 
     private fun areTextFieldsEmpty(type: BizNoType): Boolean {

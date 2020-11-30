@@ -2,8 +2,6 @@ package com.jama.mpesa_biz_no_detector.graphics
 
 import android.content.Context
 import android.graphics.Canvas
-import android.graphics.Color
-import android.graphics.Paint
 import android.util.AttributeSet
 import android.view.View
 
@@ -34,5 +32,4 @@ class GraphicOverlay : View {
             it.draw(canvas)
         }
     }
-
 }
