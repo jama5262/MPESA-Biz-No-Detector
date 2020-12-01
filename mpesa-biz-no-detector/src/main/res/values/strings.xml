@@ -1,0 +1,16 @@
+<resources>
+    <string name="camera_message_1">Point your camera at an MPESA sticker</string>
+    <string name="camera_message_2">Keep camera still for a moment</string>
+    <string name="fail">Oops, couldn\'t detect an MPESA business number, please try again</string>
+    <string name="proceed">Proceed</string>
+    <string name="retry">Retry</string>
+    <string name="buy_goods_and_services">Buy Goods and Services</string>
+    <string name="paybill">Paybill</string>
+    <string name="business_no">Business Number</string>
+    <string name="account_no">Account Number</string>
+    <string name="camera_error">Camera Error</string>
+    <string name="camera_error_description">Unknown error occured, please try again</string>
+    <string name="cancel">Cancel</string>
+    <string name="please_add_a_biz_no">Please add a business no</string>
+    <string name="please_add_an_acc_no">Please add an account no</string>
+</resources>

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="MPESABizNoDetectorTheme.App" parent="Theme.MaterialComponents.Light.NoActionBar">
+        <item name="android:statusBarColor">@color/colorPrimary</item>
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorOnPrimary">@color/colorOnPrimary</item>
+        <item name="colorSecondary">@color/colorSecondary</item>
+        <item name="colorSurface">@color/colorSurface</item>
+        <item name="colorOnSurface">@color/colorOnSurface</item>
+        <item name="materialButtonOutlinedStyle">@style/MPESABizNoDetectorTheme.App.Button</item>
+        <item name="textInputStyle">@style/MPESABizNoDetectorTheme.App.TextInputLayout</item>
+    </style>
+
+    <style name="MPESABizNoDetectorTheme.App.Button" parent="Widget.MaterialComponents.Button.OutlinedButton">
+        <item name="strokeColor">@color/colorPrimary</item>
+    </style>
+
+    <style name="MPESABizNoDetectorTheme.App.TextInputLayout" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+        <item name="materialThemeOverlay">@style/MPESABizNoDetectorTheme.ThemeOverlay.App.TextInputLayout</item>
+    </style>
+
+    <style name="MPESABizNoDetectorTheme.ThemeOverlay.App.TextInputLayout" parent="">
+        <item name="colorOnSurface">@color/colorPrimary</item>
+        <item name="editTextStyle">@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox</item>
+    </style>
+
+</resources>

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.jama.mpesa_biz_no_detector">
+
+    <application>
+        <activity android:name=".ui.MPESABizNoDetectorActivity"
+            android:theme="@style/MPESABizNoDetectorTheme.App"
+            android:screenOrientation="portrait"/>
+    </application>
+
+</manifest>

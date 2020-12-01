@@ -1,18 +1,26 @@
 plugins {
     id 'com.android.application'
     id 'kotlin-android'
+    id 'kotlin-android-extensions'
 }
+
+def azureVisionKeysPropertiesFile = rootProject.file("app/azureVisionKeys.properties");
+def azureVisionKeysProperties = new Properties()
+azureVisionKeysProperties.load(new FileInputStream(azureVisionKeysPropertiesFile))
 
 android {
     compileSdkVersion 30
     buildToolsVersion "30.0.2"
 
     defaultConfig {
-        applicationId "com.jama.mpesa_business_no_detector_example"
-        minSdkVersion 16
+        applicationId "com.jama.mpesa_biz_no_detector_example"
+        minSdkVersion 21
         targetSdkVersion 30
         versionCode 1
         versionName "1.0"
+
+        buildConfigField("String", "AZURE_VISION_KEY", azureVisionKeysProperties['AZURE_VISION_KEY'])
+        buildConfigField("String", "AZURE_VISION_ENDPOINT", azureVisionKeysProperties['AZURE_VISION_ENDPOINT'])
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -39,6 +47,12 @@ dependencies {
     implementation 'androidx.appcompat:appcompat:1.2.0'
     implementation 'com.google.android.material:material:1.2.1'
     implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
+    implementation 'com.karumi:dexter:6.2.2'
+    implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.2.0'
+
+    implementation project(path: ':mpesa-biz-no-detector')
+    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
+
     testImplementation 'junit:junit:4.+'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
