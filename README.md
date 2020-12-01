@@ -3,7 +3,10 @@
 An android detection library that uses Azure Computer Vision Read API to detect MPESA business and/or account numbers from images
 
 ## Demos
-Put demos here
+
+Start Vision Activity | Pass a Bitmap
+------------ | -------------
+<img src="https://github.com/jama5262/MPESA-Business-No-Detector/blob/1.0.0/art/art3.gif" height="500px"> | <img src="https://github.com/jama5262/MPESA-Business-No-Detector/blob/1.0.0/art/art2.gif" height="500px">
 
 ## Prerequisite
 - Understanding of Microsoft Azure Cloud Service
@@ -33,7 +36,7 @@ allprojects {
 
 ```
 dependencies {
-    implementation 'com.github.jama5262:'
+    implementation 'com.github.jama5262:MPESA-Business-No-Detector:1.0.0'
 }
 ```
 
@@ -51,8 +54,8 @@ dependencies {
 ```
 <dependency>
     <groupId>com.github.jama5262</groupId>
-	<artifactId></artifactId>
-    <version></version>
+    <artifactId>MPESA-Business-No-Detector</artifactId>
+    <version>1.0.0</version>
 </dependency>
 ```
 

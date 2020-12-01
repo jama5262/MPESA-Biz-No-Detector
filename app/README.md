@@ -1,5 +1,8 @@
 ## Demos
-Put demos here
+
+Start Vision Activity | Pass a Bitmap
+------------ | -------------
+<img src="https://github.com/jama5262/MPESA-Business-No-Detector/blob/1.0.0/art/art3.gif" height="500px"> | <img src="https://github.com/jama5262/MPESA-Business-No-Detector/blob/1.0.0/art/art2.gif" height="500px">
 
 ## Prerequisite
 - Understanding of Microsoft Azure Cloud Service
@@ -19,6 +22,8 @@ Get your Azure Vision `key` and `endpoint`
 In the `app` folder, create a property file and name it
 
 `azureVisionKeys.properties`
+
+<img src="https://github.com/jama5262/MPESA-Business-No-Detector/blob/1.0.0/art/art1.PNG" height="200px">
 
 And in the file add the following Azure Vision Credentials key and endpoint
 
