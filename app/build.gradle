@@ -4,10 +4,6 @@ plugins {
     id 'kotlin-android-extensions'
 }
 
-def azureVisionKeysPropertiesFile = rootProject.file("app/azureVisionKeys.properties");
-def azureVisionKeysProperties = new Properties()
-azureVisionKeysProperties.load(new FileInputStream(azureVisionKeysPropertiesFile))
-
 android {
     compileSdkVersion 30
     buildToolsVersion "30.0.2"
@@ -18,9 +14,6 @@ android {
         targetSdkVersion 30
         versionCode 1
         versionName "1.0"
-
-        buildConfigField("String", "AZURE_VISION_KEY", azureVisionKeysProperties['AZURE_VISION_KEY'])
-        buildConfigField("String", "AZURE_VISION_ENDPOINT", azureVisionKeysProperties['AZURE_VISION_ENDPOINT'])
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }

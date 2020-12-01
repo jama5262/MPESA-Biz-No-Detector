@@ -30,9 +30,10 @@ import java.io.InputStream
 
 class MainActivity : AppCompatActivity() {
 
+    // Replace with your azure vision key and endpoint
     private val mpesaBizNoDetector = MPESABizNoDetector(
-        Constants.AZURE_VISION_ENDPOINT,
-        Constants.AZURE_VISION_KEY
+        "YOUR_AZURE_VISION_ENDPOINT",
+        "YOUR_AZURE_VISION_KEY"
     )
 
     private lateinit var loadingDialog: AlertDialog
