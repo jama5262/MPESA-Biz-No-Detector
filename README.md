@@ -15,7 +15,7 @@ Start Vision Activity | Pass a Bitmap
 You will need the `key` and `endpoint` from the resource you created to connect your application to the Computer Vision service. You can use the free pricing tier (F0) to try the service, and upgrade later to a paid tier for production.
 
 ## Try out the Example
-To try out the example app, follow the instructions [here](https://github.com/jama5262/MPESA-Business-No-Detector/tree/v1.0.0/app) to set up your Azure Vision `key` and `endpoint` environment variables and to run the example on your android phone
+To try out the example app, follow the instructions [here](https://github.com/jama5262/MPESA-Business-No-Detector/tree/1.0.0/app) to set up your Azure Vision `key` and `endpoint` environment variables and to run the example on your android phone
 
 ## Installation
 
@@ -36,7 +36,7 @@ allprojects {
 
 ```
 dependencies {
-    implementation 'com.github.jama5262:MPESA-Business-No-Detector:1.0.0'
+    implementation 'com.github.jama5262:MPESA-Biz-No-Detector:1.0.0'
 }
 ```
 
@@ -54,7 +54,7 @@ dependencies {
 ```
 <dependency>
     <groupId>com.github.jama5262</groupId>
-    <artifactId>MPESA-Business-No-Detector</artifactId>
+    <artifactId>MPESA-Biz-No-Detector</artifactId>
     <version>1.0.0</version>
 </dependency>
 ```
